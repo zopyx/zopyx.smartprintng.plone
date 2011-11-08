@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.7 (2011-11-08)
+------------------
+- removed some baggage in order to make distro smaller
+
 2.1.6 (2011-11-07)
 ------------------
 - minor fixes in handling of generated files for download 
