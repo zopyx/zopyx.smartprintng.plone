@@ -1,0 +1,93 @@
+/*
+
+    The fonts listed in this file have been made available by Red Hat.
+    We are grateful to them. The license texts are available from:
+
+       http://www.princexml.com/fonts/liberation/License.txt
+       http://www.princexml.com/fonts/liberation/COPYING
+*/
+
+@font-face {
+  font-family: "Liberation Mono";
+  font-weight: bold;
+  font-style: normal;
+  src: url(LiberationMono-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Mono";
+  font-weight: bold;
+  font-style: italic;
+  src: url(LiberationMono-BoldItalic.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Mono";
+  font-weight: normal;
+  font-style: italic;
+  src: url(LiberationMono-Italic.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Mono";
+  font-weight: normal;
+  font-style: normal;
+  src: url(LiberationMono-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  font-weight: bold;
+  font-style: normal;
+  src: url(LiberationSans-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  font-weight: bold;
+  font-style: italic;
+  src: url(LiberationSans-BoldItalic.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  font-weight: normal;
+  font-style: italic;
+  src: url(LiberationSans-Italic.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  font-weight: normal;
+  font-style: normal;
+  src: url(LiberationSans-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Serif";
+  font-weight: bold;
+  font-style: normal;
+  src: url(LiberationSerif-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Serif";
+  font-weight: bold;
+  font-style: italic;
+  src: url(LiberationSerif-BoldItalic.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Serif";
+  font-weight: normal;
+  font-style: italic;
+  src: url(LiberationSerif-Italic.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Liberation Serif";
+  font-weight: normal;
+  font-style: normal;
+  src: url(LiberationSerif-Regular.ttf) format("truetype");
+}
+

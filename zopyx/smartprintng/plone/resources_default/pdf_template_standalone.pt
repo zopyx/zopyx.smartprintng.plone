@@ -1,0 +1,39 @@
+<html i18n:domain="plone"> 
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+        <!-- The standard CSS -->
+        <link rel="stylesheet" href="styles_standalone.css" />
+        <link rel="stylesheet" href="single_aggregated_bookmarks.css" />
+        <link rel="stylesheet" href="single_aggregated_toc.css" />
+        <link rel="stylesheet" href="page_numbers.css" />
+        <link rel="stylesheet" href="footnotes.css" />
+        <link rel="stylesheet" href="images.css" />
+        <link rel="stylesheet" href="tables.css" />
+        <link rel="stylesheet" href="injected_counters.css" />
+        <link rel="stylesheet" href="injected_office_styles.css" />
+
+        <!-- Language dependent hyphenation support -->
+        <tal:if condition="options/language | nothing">
+            <link rel="stylesheet" tal:attributes="href string:${options/language}.css" />
+        </tal:if>
+
+        <tal:if condition="options/custom_css |nothing">
+            <style type="text/css" tal:content="options/custom_css" />
+        </tal:if>
+
+    </head>
+    <body>
+        <div tal:condition="options/coverfront | nothing"
+             tal:content="structure options/coverfront"
+             id="cover-front"
+        />
+
+        <div id="main-content" tal:content="structure options/body" />
+
+        <div tal:condition="options/coverback | nothing"
+             tal:content="structure options/coverback"
+             id="cover-back"
+        />
+    </body>
+</html>

@@ -1,0 +1,5 @@
+/* chapters shall always begin on an odd numbered page */
+h1.title {
+    page-break-before: left;
+}
+

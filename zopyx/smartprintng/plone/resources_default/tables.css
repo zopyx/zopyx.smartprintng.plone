@@ -1,0 +1,72 @@
+/* Tables */
+
+table {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    border: 1px solid #afafaf;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    padding-right: 0.5em;
+    padding-left: 0.5em;
+    text-align: left;
+}
+
+table {
+    caption-side: bottom;
+    prince-caption-page: all;
+    counter-increment: table-counter;
+    page-break-inside: avoid;
+}
+
+table td {
+    vertical-align: top;
+    hyphens: none;
+}
+
+caption:before {
+    content: "Table " counter(table-counter) ": ";
+}
+caption {
+    line-height: 1em;
+    font-style: italic;
+}
+
+/* Table listing */
+
+
+#table-list {
+    page-break-before: always;
+}
+
+#table-list:before {
+    content: "Tables listing";
+    font-size: 20px;
+}
+
+#table-list a {
+    color: black;
+    text-decoration: none;
+}
+
+#table-list ul, #table-list li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#table-list a:after {
+    font-style: normal;
+    content: leader('.') target-counter(attr(href), page) ' ';
+}
+
+#table-list a:before {
+    font-style: normal;
+    content: "Table " target-counter(attr(href), table-counter) ': ';
+}
+
+

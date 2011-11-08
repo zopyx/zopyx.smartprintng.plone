@@ -1,0 +1,22 @@
+/* Cross-references inside the document itself */
+
+a[href]::after {
+    content: " [See chapter "
+             target-counter(attr(href), c1) 
+             " on page "
+             target-counter(attr(href), page) 
+             "]"
+}
+
+.generated-footnote a[href]::after {
+    content: ""; 
+}
+
+.contentinfo a[href]::after {
+    content: ""; 
+}
+
+a[href].no-decoration::after {
+    content: "";
+}
+

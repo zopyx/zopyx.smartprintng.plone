@@ -1,0 +1,9 @@
+<!-- HTML fragment for standard Plone documents -->
+
+<div class="type-document content-body">
+    <tal:if tal:condition="python: context.getField('pdfShowTitle').get(context)">
+        <h1 class="title" tal:condition="context/Title" tal:content="context/Title" />
+    </tal:if>
+    <div class="description documentDescription" tal:condition="context/Description" tal:content="context/Description" />
+    <div class="body" tal:condition="context/getText" tal:content="structure context/getText" />
+</div>

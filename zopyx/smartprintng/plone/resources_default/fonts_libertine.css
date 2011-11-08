@@ -1,0 +1,30 @@
+
+@font-face {
+  font-family: "Libertine";
+  font-weight: bold;
+  font-style: italic;
+  src: url(LinLibertine_BI-4.0.5.otf);
+}
+
+@font-face {
+  font-family: "Libertine";
+  font-weight: normal;
+  font-style: italic;
+  src: url(LinLibertine_It-4.0.6.otf);
+}
+
+@font-face {
+  font-family: "Libertine";
+  font-weight: normal;
+  font-style: normal;
+  src: url(LinLibertine_Re-4.4.1.otf);
+}
+
+
+@font-face {
+  font-family: "Libertine";
+  font-weight: bold;
+  font-style: normal;
+  src: url(LinLibertine_Bd-4.1.0.otf);
+}
+

@@ -1,0 +1,11 @@
+
+@font-face {
+  font-family: "ArialUnicode";
+  font-weight: normal;
+  font-style: normal;
+  src: url(ArialUnicode.ttf) format("truetype");
+}
+
+* {
+    font-family: ArialUnicode;
+}

@@ -1,0 +1,12 @@
+/*
+ * Tables with class "turntable" will be displayed in landscapeformat
+ */
+@page big_table {
+    size: A4 landscape
+}
+
+table.turntable {
+    page: big_table
+}
+
+

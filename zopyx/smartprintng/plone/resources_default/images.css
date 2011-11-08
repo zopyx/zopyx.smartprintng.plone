@@ -1,0 +1,80 @@
+/* center images */
+.image-container { 
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Image captions
+ */
+.image-caption { 
+    line-height: 1em;
+    font-style: italic;
+}
+
+/* counter before image caption */
+.image-caption:before {
+    content: 'Image ' counter(image-counter) ": ";
+}
+
+/* no breaks inside image containers */
+.image-container {
+    page-break-inside: avoid;
+    counter-increment: image-counter;
+}
+
+/* hide image title */ 
+.image-caption-with-title {
+    display: none;
+}
+
+/* but show image description */ 
+.image-caption-with-description {
+    display: inline;
+}
+
+/* Image listing */
+
+
+#images-list {
+    page-break-before: always;
+}
+
+#images-list:before {
+    content: "Images listing";
+    font-size: 20px;
+}
+
+#images-list a {
+    color: black;
+    text-decoration: none;
+}
+
+#images-list ul, #images-list li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#images-list a:after {
+    font-style: normal;
+    content: leader('.') target-counter(attr(href), page) ' ';
+}
+
+#images-list a:before {
+    font-style: normal;
+    content: "Image " target-counter(attr(href), image-counter) ': ';
+}
+
+
+.warning-no-description {
+    color: red;
+}
+
+.warning-no-description:before {
+    content: " (";
+}
+
+.warning-no-description:after {
+    content: ") ";
+}

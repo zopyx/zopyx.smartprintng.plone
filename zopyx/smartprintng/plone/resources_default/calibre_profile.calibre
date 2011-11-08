@@ -1,0 +1,6 @@
+--level1-toc "//*[name()='h1']"
+--level2-toc "//*[name()='h2']"
+--level3-toc "//*[name()='h3']"
+--page-breaks-before "//*[name()='h1' or name()='h2']"
+--title '%(title)s'
+--authors '%(authors)s'

@@ -1,0 +1,62 @@
+h2 {
+    counter-increment: c1;
+    counter-reset: c2;
+}
+
+h3 {
+    counter-increment: c2;
+    counter-reset: c3;
+}
+
+h4 {
+    counter-increment: c3;
+    counter-reset: c4;
+}
+
+h5 {
+    counter-increment: c4;
+    counter-reset: c5;
+}
+
+
+/* 
+ * PDF Bookmarks
+ */
+h2 {
+    prince-bookmark-label: counter(c1) ' ' content();
+    prince-bookmark-level: 1;
+}
+
+h2::before {
+    content: counter(c1) ' - '; 
+}
+
+
+h3 {
+    prince-bookmark-label: counter(c1) '.' counter(c2) ' ' content();
+    prince-bookmark-level: 2;
+}
+
+h3::before {
+    content: counter(c1) '.' counter(c2) ' ';
+}
+
+
+h4 {
+    prince-bookmark-label: counter(c1) '.' counter(c2) '.' counter(c3) ' ' content();
+    prince-bookmark-level: 3;
+}
+
+h4::before {
+    content: counter(c1) '.' counter(c2) '.' counter(c3) ' ';
+}
+
+
+h5 {
+    prince-bookmark-label: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) ' '  content();
+    prince-bookmark-level: 4;
+}
+
+h5::before {
+    content: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) ' ';
+}

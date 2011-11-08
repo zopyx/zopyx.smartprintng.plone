@@ -1,0 +1,104 @@
+/* Styles used used "standalone" conversion using
+ * Produce & Publish Plone Client Connector
+ */
+
+@page {
+    size: A4;
+
+    margin-top: 50mm;
+
+    @bottom {
+        content: counter(page);
+    }
+}
+
+@page:first {
+
+    @top {
+        content: flow(firstpage);
+    }
+}
+
+* {
+    font-family: Arial;
+}
+
+h1 {
+    font-size: 25px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+.description {
+    font-weight: bold;
+    font-size: 16px;
+    page-break-inside: avoid;
+}
+
+.body {
+    text-align: justify;
+}
+
+
+/* 
+ * footer
+*/
+
+.footer {
+    flow: static(footer);
+}
+
+#footer-page-counter,
+#footer-text {
+    text-align: center;
+    font-size: 10px;
+}
+
+#footer-text {
+    margin-bottom: 1em;
+}
+
+#footer-page-counter {
+}
+
+pre {
+    font-size: 9px;
+    background-color: #eeeeee;
+    color: black;
+    white-space: pre-wrap;
+    margin-left: 1em;
+    margin-right: 1em;
+    padding: 0.5em;
+    font-family: "Courier New";
+    border: thin solid black;
+    border-radius: 8px;
+    padding: 0.4em;
+}
+
+/* delimiter for aggregated documents */
+.document-boundary {
+    page-break-after: always;
+}
+
+/*
+ * Debug - content information
+ *
+ */
+
+.contentinfo {
+    float: right;
+    background: #eeeeee;
+    margin-right: -20mm;
+    width: 15mm;
+    padding: 3mm;
+    font-size: 9px;
+    display: none;
+}
+
+.contentinfo a { 
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}

@@ -1,0 +1,16 @@
+<html i18n:domain="plone"> 
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+        <!-- Language dependent hyphenation support -->
+        <tal:if condition="options/language | nothing">
+            <link rel="stylesheet" tal:attributes="href string:${options/language}.css" />
+        </tal:if>
+        <tal:if condition="options/custom_css |nothing">
+            <style type="text/css" tal:content="options/custom_css" />
+        </tal:if>
+    </head>
+    <body>
+        <div id="main-content" tal:content="structure options/body" />
+    </body>
+</html>

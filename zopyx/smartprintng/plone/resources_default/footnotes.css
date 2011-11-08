@@ -1,0 +1,38 @@
+/* footnotes in the bottom */
+@page {
+    @footnotes {
+        border-top: 1px solid black;
+        padding-top: 0.77em;
+        margin-top: 1em;
+    }
+}
+
+/* footnote reference-numbers in the bottom */
+.generated-footnote {
+    display: prince-footnote;
+    counter-increment: footnote;
+    text-decoration: none;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.75em;
+    margin-left: 2em;
+    margin-right: 1em;
+    padding-right: 1em;
+    padding-left: 0.25em;
+}
+
+/*footnote text (links) in the bottom */
+.generated-footnote a {
+    text-decoration: none;
+    font-style: normal;
+    color: black;
+}
+
+/* the footnote's reference-numbers in the body text */
+.generated-footnote::footnote-call {
+    content: "[" counter(footnote) "]";
+    font-size: 83%;
+    vertical-align: super;
+    padding-right: 1em;
+}
+

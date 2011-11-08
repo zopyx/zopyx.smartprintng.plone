@@ -1,0 +1,8 @@
+* {
+    hyphens: auto;
+    hyphenate-patterns: url('de.hyp');
+    hyphens: auto;
+    hyphenate-before: 4;
+    hyphenate-after: 3;
+}
+

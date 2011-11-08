@@ -1,0 +1,81 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:smartprintng="http://namespaces.zopyx.com/smartprintng"
+    >
+
+    <browser:page
+      name="asHTML"
+      for="Products.ATContentTypes.interface.folder.IATFolder"
+      permission="zope2.View"
+      class=".types.folder.HTMLView"
+      />
+
+    <browser:page
+      zcml:condition="installed plone.dexterity"
+      name="asHTML"
+      for="plone.dexterity.interfaces.IDexterityContainer"
+      permission="zope2.View"
+      class=".types.folder.HTMLView"
+      />
+
+    <browser:page
+      name="asHTML"
+      for="Products.ATContentTypes.interface.document.IATDocument"
+      permission="zope2.View"
+      class=".types.document.HTMLView"
+      />
+
+    <browser:page
+      name="asHTML"
+      for="Products.ATContentTypes.interface.news.IATNewsItem"
+      permission="zope2.View"
+      class=".types.newsitem.HTMLView"
+      />
+
+    <browser:page
+      name="asHTML"
+      for="Products.ATContentTypes.interface.topic.IATTopic"
+      permission="zope2.View"
+      class=".types.topic.HTMLView"
+      />
+
+    <browser:page
+      zcml:condition="installed Products.PloneGlossary"
+      name="asHTML"
+      for="Products.PloneGlossary.interfaces.IPloneGlossary"
+      permission="zope2.View"
+      class=".types.glossary.GlossaryHTMLView"
+      />
+
+    <!-- a generic Dexterity view catching all Dexterity
+         content since TTW-generated Dexterity content
+         don't have specific interfaces.
+    -->
+
+    <browser:page
+      zcml:condition="installed plone.dexterity"
+      name="asHTML"
+      for="plone.dexterity.interfaces.IDexterityContent"
+      permission="zope2.View"
+      class=".types.dexterity.DexterityGenericView"
+      />
+
+    <!-- standard PDF view -->
+
+    <browser:page
+      name="asPlainPDF"
+      for="*"
+      permission="zope2.View"
+      class=".pdf.PDFDownloadView"
+    />
+
+    <browser:page
+      name="ppConvert"
+      for="*"
+      permission="zope2.View"
+      class=".pdf.GenericDownloadView"
+    />
+
+</configure>

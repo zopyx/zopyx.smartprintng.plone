@@ -1,0 +1,52 @@
+<html i18n:domain="plone"> 
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+     
+        <!-- Stylesheets -->
+        <tal:loop repeat="stylesheet options/context/getStyles">
+           <link rel="stylesheet" tal:attributes="href stylesheet" />
+        </tal:loop>
+
+        <link rel="stylesheet" href="injected_counters.css" />
+        <link rel="stylesheet" href="injected_office_styles.css" />
+
+        <!-- Language dependent hyphenation support -->
+        <tal:if condition="options/language | nothing">
+            <link rel="stylesheet" tal:attributes="href string:${options/language}.css" />
+        </tal:if>
+
+        <tal:if condition="options/custom_css |nothing">
+            <style type="text/css" tal:content="options/custom_css" />
+        </tal:if>
+
+        <!-- 'show-debug-info' URL parameter will display the content-info box -->
+        <tal:if condition="options/request/show-debug-info | nothing">
+            <style type="text/css">
+                .contentinfo {
+                    display: block;
+               }
+            </style>
+        </tal:if>
+
+    </head>
+    <body>
+        <div tal:condition="options/coverfront | nothing"
+             tal:content="structure options/coverfront"
+             id="cover-front"
+        />
+
+        <div id="table-of-contents">
+            <div id="table-of-contents-heading">Table of contents</div>
+            <div id="toc"></div>
+        </div> 
+    
+        <div id="main-content">
+            <div tal:replace="structure options/body" />
+        </div>
+
+        <div tal:condition="options/coverback | nothing"
+             tal:content="structure options/coverback"
+             id="cover-back"
+        />
+    </body>
+</html>

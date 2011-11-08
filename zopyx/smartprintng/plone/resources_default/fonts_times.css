@@ -1,0 +1,30 @@
+
+@font-face {
+  font-family: "TNR";
+  font-weight: bold;
+  font-style: italic;
+  src: url(timesbi.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "TNR";
+  font-weight: normal;
+  font-style: italic;
+  src: url(timesi.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "TNR";
+  font-weight: normal;
+  font-style: normal;
+  src: url(times.ttf) format("truetype");
+}
+
+
+@font-face {
+  font-family: "TNR";
+  font-weight: bold;
+  font-style: normal;
+  src: url(timesbd.ttf) format("truetype");
+}
+

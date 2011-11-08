@@ -1,0 +1,85 @@
+@page {
+    size: A4;
+
+    margin-top: 30mm;
+
+    @bottom {
+        content: counter(page);
+        font-size: 88%;
+    }
+}
+
+@page:first {
+
+    @top {
+        content: flow(firstpage);
+    }
+}
+
+body {
+    font-size: 12px;
+    font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
+    line-height: 1.5em;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+h1 {
+    font-size: 200%;
+    margin-top: 0;
+    padding-bottom: 17px;
+    line-height: 1.5em;
+}
+
+h2 {
+    font-size: 133%;
+    padding: 14px 0;
+    line-height: 1.5em;
+}
+
+h3 {
+    font-size: 115%;
+    padding-top: 7px;
+    line-height: 1.5em;
+}
+
+h4, h5, h6 {
+    font-size: 100%;
+    line-height: 1.5em;
+}
+
+/* if h3 follows h2 (siblling) there is too much space between them 
+/* let's take away the margin fom princexml default settings 
+/* we put minus margin to get rid of the h2 spaces, too
+ */
+h2 + h3 {
+    margin: -1.5em 0 0 0;
+}
+
+p {
+    line-height: 1.77em;
+}
+
+pre {
+    font-size: 0.775em;
+    background-color: #eeeeee;
+    color: black;
+    white-space: pre-wrap;
+    margin-left: 1em;
+    margin-right: 1em;
+    padding: 0.5em;
+    font-family: "Courier New";
+    border: thin solid black;
+    border-radius: 8px;
+    padding: 0.4em;
+}
+
+tt {
+    font-family: Courier;
+    background: #dddddd;
+}
+
+

@@ -1,0 +1,36 @@
+/* 
+ *  left pages get pagenumber on the left and vice versa
+ */
+
+@page {
+    @bottom {
+        content: none /* overrides single_base.css */
+    }
+}
+
+
+@page:left {
+    @bottom-left {
+        content: counter(page);
+        font-size: 88%;
+    }
+}
+
+@page:right {
+    @bottom-right {
+        content: counter(page);
+        font-size: 88%;
+    }
+}
+
+
+
+/* 
+ * reset pagenumber to 1 when main content begins 
+ */
+
+#main-content {
+    page: chapter;
+    counter-reset: page 1
+}
+

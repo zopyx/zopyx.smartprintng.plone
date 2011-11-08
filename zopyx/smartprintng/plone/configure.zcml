@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:smartprintng="http://namespaces.zopyx.com/smartprintng"
+    >
+
+    <include package="Products.CMFCore" file="permissions.zcml" />
+    <include package="archetypes.schemaextender" />
+    <adapter factory=".extender.image.ImageExtender" />
+    <adapter factory=".extender.document.DocumentExtender" />
+
+    <include file="meta.zcml" />
+    <include package=".browser" />
+
+    <!-- marker interfaces -->
+    <class class="Products.ATContentTypes.content.document.ATDocument">
+        <implements interface=".interfaces.IPPContent" />
+    </class>
+
+    <class class="Products.ATContentTypes.content.newsitem.ATNewsItem">
+        <implements interface=".interfaces.IPPContent" />
+    </class>
+
+    <!-- default P&P resources -->
+    <smartprintng:resourceDirectory
+      name="pp-default"
+      directory="resources_default"
+      />
+</configure>

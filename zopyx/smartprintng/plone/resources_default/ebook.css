@@ -1,0 +1,8 @@
+/* standard EBook CSS stylesheet for Calibre - the settings below
+ * will be merged into the stylesheet.css by Calibre automatically.
+ * There is no need to specify ebook.css itself inside the ebook_template.pt.
+ */
+
+* {
+    color: black;
+}
