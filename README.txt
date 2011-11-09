@@ -6,6 +6,10 @@ Documentation
 
 See http://docs.produce-and-publish.com
 
+Source code
+-----------
+See https://github.com/zopyx/zopyx.smartprintng.plone
+
 Licence
 -------
 Published under the GNU Public Licence Version 2 (GPL 2)
