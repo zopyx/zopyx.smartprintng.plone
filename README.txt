@@ -15,7 +15,7 @@ Author
 | ZOPYX Limited
 | Charlottenstr. 37/1
 | D-72070 Tuebingen, Germany
-| info@zopyx.cpom
+| info@zopyx.com
 | www.zopyx.com
 
 
