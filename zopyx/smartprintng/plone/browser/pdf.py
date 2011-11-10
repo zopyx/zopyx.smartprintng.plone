@@ -28,6 +28,7 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 
 # server host/port of the SmartPrintNG server
 URL = os.environ.get('SMARTPRINTNG_SERVER', 'http://localhost:6543')
+LOCAL_CONVERSION = 'SMARTPRINTNG_LOCAL_CONVERSION' in os.environ
 
 
 class ProducePublishView(BrowserView):
@@ -205,12 +206,22 @@ class ProducePublishView(BrowserView):
         if 'no_conversion' in params:
             return destdir
         
-        # Produce & Publish server integration
-        from zopyx.smartprintng.client.zip_client import Proxy2
-        proxy = Proxy2(URL)
-        result = proxy.convertZIP2(destdir, self.request.get('converter', 'pdf-prince'))
-        LOG.info('Output file: %s' % result['output_filename'])
-        return result['output_filename']
+        if LOCAL_CONVERSION:
+            from zopyx.convert2 import Converter
+            c = Converter(dest_filename)
+            result = c(params.get('converter', 'pdf-pisa'))
+            if result['status'] != 0:
+                raise RuntimeError('Error during PDF conversion (%r)' % result)
+            pdf_file = result['output_filename']
+            LOG.info('Output file: %s' % pdf_file)
+            return pdf_file
+        else:
+            # Produce & Publish server integration
+            from zopyx.smartprintng.client.zip_client import Proxy2
+            proxy = Proxy2(URL)
+            result = proxy.convertZIP2(destdir, self.request.get('converter', 'pdf-prince'))
+            LOG.info('Output file: %s' % result['output_filename'])
+            return result['output_filename']
 
 InitializeClass(ProducePublishView)
 

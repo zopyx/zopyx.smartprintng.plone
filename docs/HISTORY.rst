@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.8 (2011-11-11)
+------------------
+- support for new ``SMARTPRINTNG_LOCAL_CONVERSION`` environment
+  variable
+
 2.1.7 (2011-11-08)
 ------------------
 - removed some baggage in order to make distro smaller
