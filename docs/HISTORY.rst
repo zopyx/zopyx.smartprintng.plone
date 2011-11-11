@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.8 (2011-11-11)
+------------------
+- fixed bug in makeImagesLocal() transformation
+  where the document root has not been used properly
+  for finding images by traversal 
+
 2.1.7 (2011-11-08)
 ------------------
 - removed some baggage in order to make distro smaller

@@ -268,7 +268,7 @@ def makeImagesLocal(root, params):
     for document_node in CSSSelector('div.level-0')(root):
         document_obj = ref_catalog.lookupObject(document_node.get('uid'))
 
-        for img in document_node.xpath('//img'):
+        for img in document_node.xpath(xpath_query(['img']));
             # 'internal' images are marked with class="internal resource"
             # in order to prevent image fetching later on
             if 'internal-resource' in (img.get('class') or '') or img.get('processed'):
