@@ -52,9 +52,9 @@ class HTMLView(BrowserView):
                         collect_objects(obj, level+1, items)
 
         context_path = '/'.join(self.context.getPhysicalPath())
+        utils = getToolByName(self.context, 'plone_utils')
         wf_tool = getToolByName(self.context, 'portal_workflow')
         catalog = getToolByName(self.context, 'portal_catalog')
-        utils = getToolByName(self.context, 'plone_utils')
 
         html = list()
         collected_objs = list()
