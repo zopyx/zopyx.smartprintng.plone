@@ -7,7 +7,7 @@ setup(name='zopyx.smartprintng.plone',
       version=version,
       description="Produce & Publisher server integration with Plone",
       long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.rst")).read(),
+                       open(os.path.join("docs", "source", "HISTORY.rst")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Programming Language :: Python",
