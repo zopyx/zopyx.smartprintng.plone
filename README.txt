@@ -4,7 +4,7 @@ The Produce & Publish Client Connector for Plone
 Documentation
 -------------
 
-See http://docs.produce-and-publish.com
+See http://packages.python.org/zopyx.smartprintng.plone
 
 Source code
 -----------
