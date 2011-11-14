@@ -62,7 +62,7 @@ def collector(folder, level=1, published_only=False, html=[]):
                 else:
                     folder_title = obj.title # Dexterity
                     folder_descr = obj.description
-                html.append('<h%d>%s</h%d>' % (level, folder_title, level))
+                html.append('<h%d class="title">%s</h%d>' % (level, folder_title, level))
                 html.append('<div class="description">%s</div>' % folder_descr)
                 collector(obj, level+1, published_only, html)
                 html.append('</div>')

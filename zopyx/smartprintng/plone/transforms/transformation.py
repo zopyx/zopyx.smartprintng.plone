@@ -919,6 +919,6 @@ def adjustHeadingsFromAggregatedHTML(root):
         # now add an offset to the heading level
         for heading in node.xpath(xpath_query(ALL_HEADINGS)):
             heading_level = int(heading.tag[1:])
-            new_level = level + heading_levels_used.index(heading_level) + 1
+            new_level = level + heading_levels_used.index(heading_level) 
             heading.tag = 'h%d' % new_level
 
