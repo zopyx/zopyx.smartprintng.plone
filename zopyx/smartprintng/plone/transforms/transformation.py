@@ -26,7 +26,7 @@ TRANSFORMATIONS = dict()
 
 url_match = re.compile(r'^(http|https|ftp)://')
 leading_numbers = re.compile('^(\d*)', re.UNICODE|re.MULTILINE)
-
+ALL_HEADINGS = ('h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8', 'h9', 'h10')
 
 def nodeProcessed(node):
     if node.get('processed'):
@@ -107,7 +107,7 @@ def cleanupEmptyElements(root, tags=['div']):
         if not node.text_content().strip():
             node.getparent().remove(node)
 
-UUID4TAGS = ('h1', 'h2', 'h3', 'h4', 'h5', 'img', 'table', 'li', 'dt', 'ul', 'ol', 'dl')
+UUID4TAGS = ALL_HEADINGS + ('img', 'table', 'li', 'dt', 'ul', 'ol', 'dl')
 @registerTransformation
 def addUUIDs(root, tags=UUID4TAGS):
     """ Add a unique/random UUID to all (specified) tags """
@@ -119,7 +119,7 @@ def addUUIDs(root, tags=UUID4TAGS):
 @registerTransformation
 def shiftHeadings(root):
     """ H1 -> H2, H2 -> H3.... """
-    for node in root.xpath(xpath_query(('h1', 'h2', 'h3', 'h4', 'h5'))):
+    for node in root.xpath(xpath_query(ALL_HEADINGS)):
         level = int(node.tag[1:])
         node.tag = 'h%d' % (level+1)
 
@@ -161,7 +161,7 @@ def fixHeadingsAfterOfficeImport(root):
     """ Remove leading section numbers from headings """
 
     regex = re.compile(r'^([\d\.]*)', re.UNICODE)
-    for heading in root.xpath(xpath_query(('h1', 'h2', 'h3', 'h4', 'h5'))):
+    for heading in root.xpath(xpath_query(ALL_HEADINGS)):
         text = heading.text_content()
         text = regex.sub('', text)
         heading.clear()
@@ -182,7 +182,7 @@ def ignoreHeadingsForStructure(root):
         if not 'ignore-headings-for-structure' in cls:
             continue
 
-        for heading in div.xpath(xpath_query(('h1', 'h2', 'h3', 'h4', 'h5'))):
+        for heading in div.xpath(xpath_query(ALL_HEADINGS)):
             level = int(heading.tag[1:])
             heading.tag = 'div'
             heading.attrib['class'] = 'heading-level-%d' % level
@@ -518,9 +518,8 @@ def addTableOfContents(root):
 
     toc = list()
 
-    h_levels = ('h1', 'h2', 'h3', 'h4', 'h5')
     # first find all related entries (.bookmark-title class)
-    for count, e in enumerate(root.xpath(xpath_query(h_levels))):
+    for count, e in enumerate(root.xpath(xpath_query(ALL_HEADINGS))):
         level = int(e.tag[-1]) - 1 # in Plone everything starts with H2
         text = e.text_content()
         id = 'toc-%d' % count
@@ -772,7 +771,7 @@ def replaceUnresolvedLinks(root):
 def removeCrapFromHeadings(root):
     """ Ensure that HX tags containing only text """
 
-    for node in root.xpath(xpath_query(('h1', 'h2', 'h3', 'h4', 'h5'))):
+    for node in root.xpath(xpath_query(ALL_HEADINGS)):
         text = node.text_content()
         if text:
             node.clear()
@@ -792,7 +791,7 @@ def fixHierarchies(root):
             continue
         level = int(doc.get('level', '0'))
         if level > 0:
-            for heading in doc.xpath(xpath_query(('h1', 'h2', 'h3', 'h4', 'h5'))):
+            for heading in doc.xpath(xpath_query(ALL_HEADINGS)):
                 heading_level = int(heading.tag[-1])
                 heading.tag = 'h%d' % (heading_level + level)
 
@@ -893,3 +892,33 @@ def convertWordFootnotes2(root):
         # remove footnote (the outer div, see above)
         div_parent = p_tag.getparent()
         div_parent.getparent().remove(div_parent)
+
+@registerTransformation
+def adjustHeadingsFromAggregatedHTML(root):
+    """ For an aggregated HTML documented from a nested folder
+        structure we need to adjust the HX headings of the contained
+        AuthoringContentPage documents. The 'level' attribute of the
+        related document nodes is taken as an offset for recalculating
+        the headings.
+    """
+
+    # search all documents first
+    selector = CSSSelector('div.portal-type-authoringcontentpage')
+    for node in selector(root):    
+        # get their level
+        level = int(node.get('level'))
+
+        # create a sorted list of used headings
+        heading_levels_used = list()
+        for heading in node.xpath(xpath_query(ALL_HEADINGS)):
+            heading_level = int(heading.tag[1:])
+            if not heading_level in heading_levels_used:
+                heading_levels_used.append(heading_level)
+        heading_levels_used.sort()
+
+        # now add an offset to the heading level
+        for heading in node.xpath(xpath_query(ALL_HEADINGS)):
+            heading_level = int(heading.tag[1:])
+            new_level = level + heading_levels_used.index(heading_level) + 1
+            heading.tag = 'h%d' % new_level
+
