@@ -27,7 +27,7 @@ def _c(s):
         s = unicode(s, 'utf-8', 'ignore')
     return s.encode('utf-8')
 
-def collector(folder, level=0, published_only=False, html=[]):
+def collector(folder, level=1, published_only=False, html=[]):
 
     context_path = '/'.join(folder.getPhysicalPath())
     utils = getToolByName(folder, 'plone_utils')
@@ -62,7 +62,7 @@ def collector(folder, level=0, published_only=False, html=[]):
                 else:
                     folder_title = obj.title # Dexterity
                     folder_descr = obj.description
-                html.append('<h%d>%s</h%d>' % (level+1, folder_title, level+1))
+                html.append('<h%d>%s</h%d>' % (level, folder_title, level))
                 html.append('<div class="description">%s</div>' % folder_descr)
                 collector(obj, level+1, published_only, html)
                 html.append('</div>')
