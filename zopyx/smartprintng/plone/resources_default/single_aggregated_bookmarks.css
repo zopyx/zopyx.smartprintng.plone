@@ -23,6 +23,11 @@ h5 {
     counter-reset: c6;
 }
 
+h5 {
+    counter-increment: c6;
+    counter-reset: c7;
+}
+
 
 /* 
  * PDF Bookmarks
@@ -70,4 +75,13 @@ h5 {
 
 h5::before {
     content: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) '.' counter(c5) ' ';
+}
+
+h6 {
+    prince-bookmark-label: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) '.' counter(c5) '.' counter(c6) ' '  content();
+    prince-bookmark-level: 6;
+}
+
+h6::before {
+    content: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) '.' counter(c5) '.' counter(c6) ' ';
 }
