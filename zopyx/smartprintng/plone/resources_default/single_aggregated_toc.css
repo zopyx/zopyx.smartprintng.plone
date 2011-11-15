@@ -53,6 +53,11 @@
     content: target-counter(attr(href), c1) '.' target-counter(attr(href),  c2) '.' target-counter(attr(href),  c3) '.' target-counter(attr(href),  c4) '.' target-counter(attr(href), c5) ' ';
 }
 
+#toc a.toc-5::before {
+    font-style: normal;
+    content: target-counter(attr(href), c1) '.' target-counter(attr(href),  c2) '.' target-counter(attr(href),  c3) '.' target-counter(attr(href),  c4) '.' target-counter(attr(href), c5) '.' target-counter(attr(href), c6) ' ';
+}
+
 
 #toc a::after {
     content: leader('.') target-counter(attr(href), page);

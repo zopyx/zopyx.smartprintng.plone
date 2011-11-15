@@ -23,7 +23,7 @@ h5 {
     counter-reset: c6;
 }
 
-h5 {
+h6 {
     counter-increment: c6;
     counter-reset: c7;
 }
