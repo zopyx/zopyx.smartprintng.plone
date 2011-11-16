@@ -28,6 +28,16 @@ h6 {
     counter-reset: c7;
 }
 
+h7 {
+    counter-increment: c7;
+    counter-reset: c8;
+}
+
+h8 {
+    counter-increment: c8;
+    counter-reset: c9;
+}
+
 
 /* 
  * PDF Bookmarks
@@ -84,4 +94,22 @@ h6 {
 
 h6::before {
     content: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) '.' counter(c5) '.' counter(c6) ' ';
+}
+
+h7 {
+    prince-bookmark-label: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) '.' counter(c5) '.' counter(c6) '.' counter(c7) ' '  content();
+    prince-bookmark-level: 7;
+}
+
+h7::before {
+    content: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) '.' counter(c5) '.' counter(c6) '.' counter(c7) ' ';
+}
+
+h8 {
+    prince-bookmark-label: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) '.' counter(c5) '.' counter(c6) '.' counter(c7) '.' counter(c8) ' '  content();
+    prince-bookmark-level: 8;
+}
+
+h8::before {
+    content: counter(c1) '.' counter(c2) '.' counter(c3) '.' counter(c4) '.' counter(c5) '.' counter(c6) '.' counter(c7) '.' counter(c8) ' ';
 }
