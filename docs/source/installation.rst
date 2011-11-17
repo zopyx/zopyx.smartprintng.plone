@@ -121,5 +121,9 @@ Miscellaneous
 ~~~~~~~~~~~~~
 You may set the ``SMARTPRINTNG_LOCAL_CONVERSION`` environment variable
 (to some value) in order to run the conversion locally inside the Plone
-process without using an external Produce & Publish server. 
+process without using an external Produce & Publish server.           
 
+The environment varialble ``SMARTPRINTNG_ZIP_OUTPUT`` can be set to export
+all resources used for the conversion into a ZIP file for debugging purposes.
+The path of the generated ZIP file is logged within the standard Zope/Plone
+logfile (or the console if Plone is running in foreground).
