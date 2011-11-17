@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.10 (2011-11-17)
+------------------
+- improved aggregator for nested content folders
+- support for content hierarchies up to level 8
+- support for new environment variable SMARTPRINTNG_ZIP_OUTPUT
+
 2.1.9 (2011-11-11)
 ------------------
 - fixed bug in makeImagesLocal() transformation
