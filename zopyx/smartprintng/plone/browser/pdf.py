@@ -9,6 +9,7 @@ import codecs
 import shutil
 import tempfile
 import urllib2
+import zipfile
 
 from compatible import InitializeClass
 from Products.Five.browser import BrowserView
@@ -29,7 +30,7 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 # server host/port of the SmartPrintNG server
 URL = os.environ.get('SMARTPRINTNG_SERVER', 'http://localhost:6543')
 LOCAL_CONVERSION = 'SMARTPRINTNG_LOCAL_CONVERSION' in os.environ
-
+ZIP_OUTPUT = 'SMARTPRINTNG_ZIP_OUTPUT' in os.environ
 
 class ProducePublishView(BrowserView):
     """ Produce & Publish view (using Produce & Publish server) """
@@ -202,6 +203,17 @@ class ProducePublishView(BrowserView):
 
         # now copy over resources (of a derived view)
         self.copyResources(getattr(self, 'local_resources', ''), destdir)
+        if ZIP_OUTPUT or 'zip_output' in params:
+            archivename = tempfile.mktemp(suffix='.zip')
+            fp = zipfile.ZipFile(archivename, "w", zipfile.ZIP_DEFLATED) 
+            for root, dirs, files in os.walk(destdir):
+                #NOTE: ignore empty directories
+                for fn in files:
+                    absfn = os.path.join(root, fn)
+                    zfn = absfn[len(destdir)+len(os.sep):] #XXX: relative path
+                    fp.write(absfn, zfn)
+            fp.close()
+            LOG.info('ZIP file written to %s' % archivename)
 
         if 'no_conversion' in params:
             return destdir
