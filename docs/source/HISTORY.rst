@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.11 (2011-11-23)
+-------------------
+- update trove classifiers
+
 2.1.10 (2011-11-17)
 -------------------
 - improved aggregator for nested content folders
