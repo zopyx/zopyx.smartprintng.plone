@@ -414,7 +414,7 @@ def makeImagesLocal(root, params):
 
                     # add description
                     span = lxml.html.Element('span')
-                    description = img_obj.Description()
+                    description = unicode(img_obj.Description(), 'utf-8')
                     class_ = description and 'image-caption-description image-caption-with-description' or \
                                              'image-caption-description image-caption-without-description'
                     if description:
