@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.12 (2011-12-12)
+-------------------
+- added some transformations for better
+  Word import
+
 2.1.11 (2011-11-23)
 -------------------
 - update trove classifiers
