@@ -922,3 +922,23 @@ def adjustHeadingsFromAggregatedHTML(root):
             new_level = level + heading_levels_used.index(heading_level) 
             heading.tag = 'h%d' % new_level
 
+@registerTransformation
+def removeEmptyNodesFromWord(root):
+    """ Remove empty paragraphs from imported Word markup """
+    for node in root.xpath('//p'):
+        text = lxml.html.tostring(node, encoding=unicode, method='text').strip()
+        if not text:
+            node.getparent().remove(node)
+
+@registerTransformation
+def mergeSingleSpanIntoParagraph(node):
+    """ Merge solitaire <span> element inside a paragraph 
+        into the paragraph content.
+    """
+
+    for node in root.xpath('//p'):
+        spans = node.xpath('.//span')
+        if len(spans) == 1:
+            text = spans[0].text
+            spans[0].getparent().remove(spans[0])
+            node.text = text
