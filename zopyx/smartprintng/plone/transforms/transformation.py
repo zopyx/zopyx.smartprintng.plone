@@ -931,7 +931,7 @@ def removeEmptyNodesFromWord(root):
             node.getparent().remove(node)
 
 @registerTransformation
-def mergeSingleSpanIntoParagraph(node):
+def mergeSingleSpanIntoParagraph(root):
     """ Merge solitaire <span> element inside a paragraph 
         into the paragraph content.
     """
