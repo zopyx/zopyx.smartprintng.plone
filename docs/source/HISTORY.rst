@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.13 (2011-12-18)
+-------------------
+- some fixes discovered using PyFlakes
+
 2.1.12 (2011-12-12)
 -------------------
 - added some transformations for better
