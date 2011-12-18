@@ -925,6 +925,10 @@ def adjustHeadingsFromAggregatedHTML(root):
 def removeEmptyNodesFromWord(root):
     """ Remove empty paragraphs from imported Word markup """
     for node in root.xpath('//p'):
+        # don't touch nodes containing images
+        if node.xpath('.//img'):
+            continue
+        
         text = lxml.html.tostring(node, encoding=unicode, method='text').strip()
         if not text:
             node.getparent().remove(node)
