@@ -6,7 +6,7 @@
 import os
 import codecs
 from cStringIO import StringIO
-from BeautifulSoup import BeautifulSoup, Tag, NavigableString
+from BeautifulSoup import BeautifulSoup, Tag
 
 from util import _findTextInNode
 

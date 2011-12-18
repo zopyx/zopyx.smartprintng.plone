@@ -38,7 +38,7 @@ def registerTransformation(method):
     TRANSFORMATIONS[name] = method
 
 def availableTransformations():
-    return TRANSFORMATION.keys()
+    return TRANSFORMATIONS.keys()
 
 def hasTransformations(transformations):
     available_transformations = availableTransformations()
@@ -320,7 +320,7 @@ def makeImagesLocal(root, params):
                     except AttributeError:
                         pass
                 if img_data is None:
-                    LOG.warn('No image found: %s - removed from output' % img_path)
+                    LOG.warn('No image found: %s - removed from output' % src)
                     img.extract()
                     continue
 
@@ -408,7 +408,6 @@ def makeImagesLocal(root, params):
                 img_caption.attrib['class'] = 'image-caption'                       
 
                 # exclude from image enumeration
-                context = params['context']
                 exclude_field = img_obj.getField('excludeFromImageEnumeration')
                 if exclude_field and not exclude_field.get(img_obj):
 
@@ -596,7 +595,7 @@ def addTableList(root):
         nodes = CSSSelector('div#table-list')(root)
         if nodes:
             # replace it
-            node[0].replace(nodes[0], div_tables)
+            nodes[0].replace(nodes[0], div_tables)
         else:
             body = root.xpath('//body')[0]
             body.append(div_tables)

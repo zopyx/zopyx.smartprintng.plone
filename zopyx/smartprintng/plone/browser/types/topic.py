@@ -5,7 +5,6 @@
 
 from ..compatible import InitializeClass
 from Products.Five.browser import BrowserView
-from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
 class HTMLView(BrowserView):
     """ This view renders a HMTL fragment for the configured content type """

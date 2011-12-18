@@ -20,7 +20,7 @@ def getLanguageForObject(obj):
 
 def _findTextInNode(bs_node_or_text):
     if isinstance(bs_node_or_text, basestring):
-        return node
+        return bs_node_or_text
     else:
         html = lxml.html.fromstring(unicode(bs_node_or_text))
         return html.text_content()

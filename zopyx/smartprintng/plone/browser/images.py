@@ -74,7 +74,7 @@ def existsExternalImageUrl(url):
         return False
 
     try:
-        response = urlopen(HeadRequest(url))
+        urlopen(HeadRequest(url))
         return True
     except Exception, e: 
         LOG.warn('External(?) image reference not found (%s)' % e)

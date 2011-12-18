@@ -3,12 +3,9 @@
 # (C) 2011,  ZOPYX Limited & Co. KG, D-72070 Tuebingen, Germany
 ################################################################
 
-from ..compatible import InitializeClass
 from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.ATContentTypes.interface.folder import IATFolder
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFCore.WorkflowCore import WorkflowException
 
 from ...import Transformer
@@ -20,7 +17,7 @@ except ImportError:
     HAVE_DEXTERITY = False
 
 from ...logger import LOG
-from ...interfaces import IPPContent, IArchiveFolder
+from ...interfaces import IArchiveFolder
 
 def _c(s):
     if not isinstance(s, unicode):
@@ -29,10 +26,8 @@ def _c(s):
 
 def collector(folder, level=1, published_only=False, html=[]):
 
-    context_path = '/'.join(folder.getPhysicalPath())
     utils = getToolByName(folder, 'plone_utils')
     wf_tool = getToolByName(folder, 'portal_workflow')
-    catalog = getToolByName(folder, 'portal_catalog')
 
     for brain in folder.getFolderContents({'sort_on' : 'getObjPositionInParent'}):
         obj = brain.getObject()

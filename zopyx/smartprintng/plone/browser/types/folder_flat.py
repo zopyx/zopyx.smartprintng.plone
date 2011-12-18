@@ -3,12 +3,9 @@
 # (C) 2011,  ZOPYX Limited & Co. KG, D-72070 Tuebingen, Germany
 ################################################################
 
-from ..compatible import InitializeClass
 from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.ATContentTypes.interface.folder import IATFolder
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFCore.WorkflowCore import WorkflowException
 
 try:
@@ -50,10 +47,8 @@ class FlatHTMLView(BrowserView):
                     if IATFolder.providedBy(obj) and not IArchiveFolder.providedBy(obj):
                         collect_objects(obj, level+1, items)
 
-        context_path = '/'.join(self.context.getPhysicalPath())
         utils = getToolByName(self.context, 'plone_utils')
         wf_tool = getToolByName(self.context, 'portal_workflow')
-        catalog = getToolByName(self.context, 'portal_catalog')
 
         html = list()
         collected_objs = list()

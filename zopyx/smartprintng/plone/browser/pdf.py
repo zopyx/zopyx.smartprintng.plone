@@ -4,11 +4,9 @@
 ################################################################
 
 import os
-import glob
 import codecs
 import shutil
 import tempfile
-import urllib2
 import zipfile
 
 from compatible import InitializeClass
@@ -155,7 +153,7 @@ class ProducePublishView(BrowserView):
         html_view = self.context.restrictedTraverse('@@asHTML', None)
         if not html_view:
             raise RuntimeError('Object at does not provide @@asHTML view (%s, %s)' % 
-                               (self.context.absolute_url(1), obj.portal_type))
+                               (self.context.absolute_url(1), self.context.portal_type))
         html_fragment = html_view()
 
         # arbitrary application data

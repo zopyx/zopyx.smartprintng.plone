@@ -8,7 +8,6 @@ import os
 from ..compatible import InitializeClass
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zopyx.smartprintng.plone.browser.pdf import PDFView
-from transformation import Transformer
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 

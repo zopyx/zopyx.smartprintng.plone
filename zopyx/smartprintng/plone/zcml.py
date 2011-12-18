@@ -12,7 +12,6 @@ import os
 
 from zope.interface import Interface
 from zope.schema import TextLine 
-import zope.configuration.fields
 
 import resources
 
