@@ -4,6 +4,7 @@ Changelog
 2.1.14 (2011-12-19)
 -------------------
 - fixed image width 100% for images inside an image-container
+  (PrinceXML 8 compatibility)
 
 2.1.13 (2011-12-18)
 -------------------
