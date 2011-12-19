@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.14 (2011-12-19)
+-------------------
+- fixed image width 100% for images inside an image-container
+
 2.1.13 (2011-12-18)
 -------------------
 - some fixes discovered using PyFlakes

@@ -377,7 +377,7 @@ def makeImagesLocal(root, params):
             img.attrib['src'] = os.path.basename(img_filename)         
             LOG.info('  Assigned new id: %s' % img.get('src'))
             img.attrib['originalscale'] = scale
-            img.attrib['style'] = ''
+            img.attrib['style'] = 'width: 100%'  # need for PrinceXML8
             img.attrib['processed'] = '1' 
 
             # image scaling
