@@ -945,3 +945,38 @@ def mergeSingleSpanIntoParagraph(root):
             text = spans[0].text
             spans[0].getparent().remove(spans[0])
             node.text = text
+
+@registerTransformation
+def convertWordEndnotes(root):
+    """ Convert Word endnotes into a simple list """
+
+    endnotes = list()
+    for node in root.xpath('//div'):
+        node_id = node.get('id', '')
+        if not node_id.startswith('sdendnote'):
+            continue
+        endnote_txt = node.xpath('.//p')[0].text_content()
+        endnote_num = node.xpath('.//a')[0].text_content()
+        endnotes.append(dict(text=endnote_txt, number=endnote_num))
+        node.getparent().remove(node)
+
+    if endnotes:
+        ul = lxml.html.Element('ol')
+        ul.attrib['class'] = 'endnotes'
+        for endnode in endnotes:
+            li = lxml.html.Element('li')
+            li.attrib['class'] = 'endnote'
+
+            span = lxml.html.Element('span')
+            span.attrib['class'] = 'endnote-number'
+            span.attrib['style'] = 'display: none'
+            span.text = endnode['number'] + '.'
+            li.append(span)
+
+            span = lxml.html.Element('span')
+            span.attrib['class'] = 'endnote-text'
+            span.text = endnode['text']
+            li.append(span)
+
+            ul.append(li)
+        root.xpath('//body')[0].append(ul)

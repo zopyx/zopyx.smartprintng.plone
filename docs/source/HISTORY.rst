@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.15 (2011-12-20)
+-------------------
+- convertWordEndnotes() transformation added
+
 2.1.14 (2011-12-19)
 -------------------
 - fixed image width 100% for images inside an image-container
