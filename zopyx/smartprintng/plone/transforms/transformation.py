@@ -950,9 +950,10 @@ def mergeSingleSpanIntoParagraph(root):
     for node in root.xpath('//p'):
         spans = node.xpath('.//span')
         if len(spans) == 1:
-            text = spans[0].text
-            spans[0].getparent().remove(spans[0])
-            node.text = text
+            if not spans[0].getchildren():
+                text = spans[0].text
+                spans[0].getparent().remove(spans[0])
+                node.text = text
 
 @registerTransformation
 def convertWordEndnotes(root):
