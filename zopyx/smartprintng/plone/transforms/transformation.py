@@ -872,14 +872,15 @@ def convertWordFootnotes2(root):
 
     selector = CSSSelector('a.sdfootnotesym')
     for anchor in selector(root):
-        anchor_id = anchor.get('id')
+        print lxml.html.tostring(anchor)
+        import pdb; pdb.set_trace() 
+        anchor_id = anchor.get('id') or anchor.get('name')
 
-        # get hold of the outer <p> tag
-        p_tag =  anchor.getparent()
-        assert p_tag.tag.lower() == 'p'
+        # get hold of the outer tag
+        parent=  anchor.getparent()
 
         # 'text' is now "2 Fussnotentext"
-        text = p_tag.text_content()
+        text = parent.text_content()
         text = leading_numbers.sub(u'', text).strip()
 
         # now find referencing footnote
@@ -898,7 +899,7 @@ def convertWordFootnotes2(root):
         footnote_anchor.getparent().replace(footnote_anchor, span)
 
         # remove footnote (the outer div, see above)
-        div_parent = p_tag.getparent()
+        div_parent = parent.getparent()
         div_parent.getparent().remove(div_parent)
 
 @registerTransformation
