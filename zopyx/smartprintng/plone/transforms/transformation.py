@@ -872,8 +872,6 @@ def convertWordFootnotes2(root):
 
     selector = CSSSelector('a.sdfootnotesym')
     for anchor in selector(root):
-        print lxml.html.tostring(anchor)
-        import pdb; pdb.set_trace() 
         anchor_id = anchor.get('id') or anchor.get('name')
 
         # get hold of the outer tag
