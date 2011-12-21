@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.16 (2011-12-21)
+-------------------
+- better footnote handling
+
 2.1.15 (2011-12-20)
 -------------------
 - convertWordEndnotes() transformation added
