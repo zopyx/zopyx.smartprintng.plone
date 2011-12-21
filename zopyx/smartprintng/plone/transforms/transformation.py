@@ -116,6 +116,15 @@ def addUUIDs(root, tags=UUID4TAGS):
         if node_id is _marker:
             node.attrib['id'] = str(uuid.uuid4())
 
+
+@registerTransformation
+def addUUIDsToAllTags(root, tags=UUID4TAGS):
+    """ Add a unique/random UUID to all tags """
+    for node in root.xpath('//*'):
+        node_id = node.get('id', _marker)
+        if node_id is _marker:
+            node.attrib['id'] = str(uuid.uuid4())
+
 @registerTransformation
 def shiftHeadings(root):
     """ H1 -> H2, H2 -> H3.... """
