@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.17 (2011-12-28)
+-------------------
+- checking html input in transformation machinery for empty strings
+
 2.1.16 (2011-12-21)
 -------------------
 - better footnote handling
