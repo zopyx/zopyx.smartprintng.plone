@@ -61,6 +61,10 @@ class Transformer(object):
                 raise TypeError('Input data must be unicode')
             html = unicode(html, input_encoding)
 
+        html = html.strip()
+        if not html:
+            return u''
+
         root = lxml.html.fromstring(html)
 
         for name in self.transformation_names:
@@ -99,6 +103,11 @@ def xpath_query(node_names):
     if not isinstance(node_names, (list, tuple)):
         raise TypeError('"node_names" must be a list or tuple (not %s)' % type(node_names))
     return './/*[%s]' % ' or '.join(['name()="%s"' % name for name in node_names])
+
+@registerTransformation
+def dummyTransformation(root):
+    """ Dummy transformation doing nothing """
+    pass
 
 @registerTransformation
 def cleanupEmptyElements(root, tags=['div']):
