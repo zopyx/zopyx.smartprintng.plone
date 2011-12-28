@@ -979,7 +979,7 @@ def convertWordEndnotes(root):
         node.getparent().remove(node)
 
     if endnotes:
-        ul = lxml.html.Element('ol')
+        ul = lxml.html.Element('ul')
         ul.attrib['class'] = 'endnotes'
         for endnode in endnotes:
             li = lxml.html.Element('li')
@@ -988,7 +988,7 @@ def convertWordEndnotes(root):
             span = lxml.html.Element('span')
             span.attrib['class'] = 'endnote-number'
             span.attrib['style'] = 'display: none'
-            span.text = endnode['number'] + '.'
+            span.text = endnode['number']
             li.append(span)
 
             span = lxml.html.Element('span')
