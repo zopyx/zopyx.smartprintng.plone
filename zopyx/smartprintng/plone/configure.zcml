@@ -8,8 +8,8 @@
 
     <include package="Products.CMFCore" file="permissions.zcml" />
     <include package="archetypes.schemaextender" />
-    <adapter factory=".extender.image.ImageExtender" />
-    <adapter factory=".extender.document.DocumentExtender" />
+    <adapter name="core-image-extender" factory=".extender.image.ImageExtender" />
+    <adapter name="core-document-extender" factory=".extender.document.DocumentExtender" />
 
     <include file="meta.zcml" />
     <include package=".browser" />
