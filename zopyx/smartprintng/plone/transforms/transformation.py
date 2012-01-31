@@ -975,25 +975,26 @@ def convertWordEndnotes(root):
             continue
         endnote_txt = node.xpath('.//p')[0].text_content()
         endnote_num = node.xpath('.//a')[0].text_content()
-        endnotes.append(dict(text=endnote_txt, number=endnote_num))
+        endnotes.append(dict(text=endnote_txt, number=endnote_num, id=node_id))
         node.getparent().remove(node)
 
     if endnotes:
         ul = lxml.html.Element('ul')
         ul.attrib['class'] = 'endnotes'
-        for endnode in endnotes:
+        for endnote in endnotes:
             li = lxml.html.Element('li')
             li.attrib['class'] = 'endnote'
 
             span = lxml.html.Element('span')
             span.attrib['class'] = 'endnote-number'
             span.attrib['style'] = 'display: none'
-            span.text = endnode['number']
+            span.text = endnote['number']
             li.append(span)
 
             span = lxml.html.Element('span')
             span.attrib['class'] = 'endnote-text'
-            span.text = endnode['text']
+            span.attrib['id'] = endnote['id'] + 'sym'
+            span.text = endnote['text']
             li.append(span)
 
             ul.append(li)
