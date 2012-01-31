@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.18 (unreleased)
+-------------------
+ - folder aggregator now support (experimental) document filter
+   based on UIDs (filter_uid parameter)
+
 2.1.17 (2011-12-28)
 -------------------
 - checking html input in transformation machinery for empty strings
