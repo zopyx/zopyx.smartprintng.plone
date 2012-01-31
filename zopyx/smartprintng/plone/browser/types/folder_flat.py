@@ -25,7 +25,7 @@ def _c(s):
 class FlatHTMLView(BrowserView):
     """ A HTML collector for a Plone folder containing Document instances """
 
-    def collect(self, published_only=False):
+    def collect(self, published_only=False, filter_uids=[]):
         """ A collector taking only flat contents into account for the
             conversion.
         """
@@ -56,6 +56,9 @@ class FlatHTMLView(BrowserView):
         for d in collected_objs:
             level = d['level']
             obj = d['obj']
+            if filter_uids and not d['obj'].UID() in filter_uids:
+                LOG.info('Filtered: %s' % obj.absolute_url(1))
+                continue
             LOG.info('Introspecting %s' % obj.absolute_url(1))
             view = obj.restrictedTraverse('@@asHTML', None)
             if view is not None:
@@ -79,6 +82,6 @@ class FlatHTMLView(BrowserView):
 
         return '\n'.join(html)
 
-    def __call__(self, published_only=False):
+    def __call__(self, published_only=False, filter_uids=[]):
         """ Collector for folderish content """
-        return self.collect(published_only=published_only)
+        return self.collect(published_only=published_only, filter_uids=filter_uids)

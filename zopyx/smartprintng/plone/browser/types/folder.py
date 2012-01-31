@@ -19,7 +19,7 @@ from folder_nested import NestedHTMLView
 
 class HTMLView(BrowserView):
 
-    def __call__(self, published_only=False):
+    def __call__(self, published_only=False, filter_uids=[]):
 
         catalog = getToolByName(self.context, 'portal_catalog')
         # First check if there is a flat for a nested folder structure
@@ -38,6 +38,6 @@ class HTMLView(BrowserView):
                     break
 
         if is_folderish:
-            return NestedHTMLView(request=self.request, context=self.context)(published_only)
+            return NestedHTMLView(request=self.request, context=self.context)(published_only, filter_uids)
         else:
-            return FlatHTMLView(request=self.request, context=self.context)(published_only)
+            return FlatHTMLView(request=self.request, context=self.context)(published_only, filter_uids)
