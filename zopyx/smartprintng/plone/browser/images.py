@@ -12,6 +12,8 @@ from urllib2 import unquote, Request, urlopen, HTTPError
 from urlparse import urlparse 
 from Products.CMFCore.utils import getToolByName
 from Products.ATContentTypes.interfaces import IATImage
+from Products.Archetypes.Field import Image
+from plone.app.imaging.scale import ImageScale
 from zopyx.smartprintng.plone.logger import LOG
 
 def resolveImage(context, src):
@@ -51,11 +53,21 @@ def resolveImage(context, src):
 
         for p in candidates:
             img_obj = context.restrictedTraverse(p, None)
-            if img_obj and img_obj.portal_type in ('Image',):
-                # check if current image is a scale (having a parent image)
-                if IATImage.providedBy(img_obj.aq_parent):
+            print p
+            print img_obj
+
+            if img_obj:
+                if img_obj.portal_type in ('Image',):
+                    # check if current image is a scale (having a parent image)
+                    if IATImage.providedBy(img_obj.aq_parent):
+                        img_obj = img_obj.aq_parent
+                    break
+                elif isinstance(img_obj, ImageScale):
                     img_obj = img_obj.aq_parent
-                break
+                    break
+                elif isinstance(img_obj.aq_parent, Image):
+                    break
+
             else:
                 img_obj = None
     return img_obj
