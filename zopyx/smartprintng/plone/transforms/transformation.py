@@ -999,3 +999,13 @@ def convertWordEndnotes(root):
 
             ul.append(li)
         root.xpath('//body')[0].append(ul)
+
+    # Rename all 'name' attributes from the anchors to endnotes since TinyMCE
+    # considers this as an anchor and not as a link to an anchor and therefore
+    # TinyMCE will remove the inner text
+    selector = CSSSelector('a.sdendnoteanc')
+    for anchor in selector(root):
+        try:
+            del anchor.attrib['name']
+        except KeyError:
+            pass
