@@ -87,6 +87,7 @@ class Transformer(object):
                 method(root, params)
             else:
                 method(root)
+
             LOG.info('Transformation %-30s: %3.6f seconds' % (name, time.time()-ts))
 
         if return_body:
@@ -179,9 +180,9 @@ def adjustImagesAfterOfficeImport(root):
 def fixHeadingsAfterOfficeImport(root):
     """ Remove leading section numbers from headings """
 
-    regex = re.compile(r'^([\d\.]*)', re.UNICODE)
+    regex = re.compile(r'^([\d*\.]*)', re.UNICODE)
     for heading in root.xpath(xpath_query(ALL_HEADINGS)):
-        text = heading.text_content()
+        text = heading.text_content().strip()
         text = regex.sub('', text)
         heading.clear()
         heading.text = text.strip()
@@ -951,6 +952,12 @@ def removeEmptyNodesFromWord(root):
         text = lxml.html.tostring(node, encoding=unicode, method='text').strip()
         if not text:
             node.getparent().remove(node)
+
+    # also remove the FOOTER culprit
+    selector = CSSSelector('div[type="FOOTER"]')
+    for node in selector(root):
+        node.getparent().remove(node)
+
 
 @registerTransformation
 def mergeSingleSpanIntoParagraph(root):
