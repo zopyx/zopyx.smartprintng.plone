@@ -373,8 +373,12 @@ def makeImagesLocal(root, params):
 
                 # now also export the preview scale as well 
                 # (needed for EPUB export/conversion)
-                preview_img = img_obj.Schema().getField('image').getScale(img_obj, scale='preview')
                 preview_filename = os.path.join(os.path.dirname(dest_img_name), 'preview_' + os.path.basename(dest_img_name))
+                preview_img = img_obj.Schema().getField('image').getScale(img_obj, scale='preview')
+                if preview_img == '': # no scales created?
+                    img_obj.Schema().getField('image').createScales(img_obj)
+                    preview_img = img_obj.Schema().getField('image').getScale(img_obj, scale='preview')
+
                 if safe_hasattr(preview_img, 'data'):
                     file(preview_filename, 'wb').write(str(preview_img.data))                                                    
                     LOG.info('  Exported preview scale to: %s' % preview_filename)
