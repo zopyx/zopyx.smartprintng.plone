@@ -8,6 +8,9 @@ import codecs
 from cStringIO import StringIO
 from BeautifulSoup import BeautifulSoup, Tag
 
+from lxml.cssselect import CSSSelector
+import lxml.html 
+
 from util import _findTextInNode
 
 def split_html(html_filename, split_at_level=0):
@@ -22,7 +25,6 @@ def split_html(html_filename, split_at_level=0):
 
     destdir = os.path.dirname(html_filename)
     soup = BeautifulSoup(file(html_filename).read())
-
     fp = StringIO(soup.__str__(prettyPrint=True))
     docs = list()
     current_doc = list()
@@ -31,26 +33,24 @@ def split_html(html_filename, split_at_level=0):
         for level in range(split_at_level+1):
             if '<h%d' % (level+1) in line.lower():
                 html = '\n'.join(current_doc)
-                soup = BeautifulSoup(html)
-                try:
-                    title = _findTextInNode(soup.find('h1'))
-                except AttributeError:
-                    title = u''
+                root = lxml.html.fromstring(html)
+                title = u''
+                h1_nodes = root.xpath('//h1')
+                if h1_nodes:
+                    title = h1_nodes[0].text_content()
 
                 # count tables and images
-                number_tables = len(soup.findAll('table'))
-                number_images = len(soup.findAll('div', {'class' : 'image-caption'}))
+                number_tables = len(root.xpath('//table'))
+                number_images = len(CSSSelector('div.image-caption')(root))
 
                 # find all linkable nodes with an ID attribute
                 node_ids = list()
-                for node in soup.recursiveChildGenerator():
-                    if not isinstance(node, Tag):
-                        continue
+                for node in root.xpath('.//*'):
                     node_id = node.get('id')
                     if node_id:
                         node_ids.append(node_id)
 
-                html = soup.prettify()
+                html = lxml.html.tostring(root, encoding=unicode)
                 docs.append(dict(html=html, 
                                  level=level, 
                                  title=title, 
@@ -64,26 +64,25 @@ def split_html(html_filename, split_at_level=0):
 
     # now deal with the remaining part of the document
     html = '\n'.join(current_doc)
-    soup = BeautifulSoup(html)
-    try:
-        title = _findTextInNode(soup.find('h1'))
-    except AttributeError:
-        title = u''
+    root = lxml.html.fromstring(html)
+    title = u''
+    h1_nodes = root.xpath('//h1')
+    if h1_nodes:
+        title = h1_nodes[0].text_content()
 
     # count tables and images
-    number_tables = len(soup.findAll('table'))
-    number_images = len(soup.findAll('div', {'class' : 'image-caption'}))
+    # count tables and images
+    number_tables = len(root.xpath('//table'))
+    number_images = len(CSSSelector('div.image-caption')(root))
 
     # find all linkable nodes with an ID attribute
     node_ids = list()
-    for node in soup.recursiveChildGenerator():
-        if not isinstance(node, Tag):
-            continue
+    for node in root.xpath('.//*'):
         node_id = node.get('id')
         if node_id:
             node_ids.append(node_id)
 
-    html = soup.prettify()
+    html = lxml.html.tostring(root, encoding=unicode)
     docs.append(dict(html=html, 
                      level=0, 
                      title=title, 
@@ -95,11 +94,12 @@ def split_html(html_filename, split_at_level=0):
     ini_filename = os.path.join(destdir, 'documents.ini')
     fp_ini = codecs.open(ini_filename, 'w', 'utf-8')
 
+
     for count, d in enumerate(docs[1:]):
         filename = os.path.join(destdir, 'split-0/%d-level-%d.html' % (count, d['level']))
         if not os.path.exists(os.path.dirname(filename)):
             os.makedirs(os.path.dirname(filename))                
-        file(filename, 'w').write(d['html'])
+        file(filename, 'w').write(d['html'].encode('utf-8'))
 
         print >>fp_ini, '[%d]' % count
         print >>fp_ini, 'filename = %s' % filename
