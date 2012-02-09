@@ -1052,13 +1052,18 @@ def addIndexListing(root):
 
         li = lxml.html.Element('li')
         li.attrib['class'] = 'index-term-entry' 
-        li.text = index_term
 
-        for term_id in term_ids:
+        span = lxml.html.Element('span')
+        span.attrib['class'] = 'index-term-entry' 
+        span.text = index_term
+        li.append(span)
+
+        num_term_ids = len(term_ids)
+        for i, term_id in enumerate(term_ids):
             a = lxml.html.Element('a')
             a.attrib['href'] = '#' + term_id
             a.attrib['class'] = 'index-term-entry' 
-            a.text = index_term
+            a.text = (i+1 < num_term_ids) and ', ' or ''
             li.append(a)
 
         div_ul.append(li)

@@ -1,6 +1,16 @@
 /* Index references */
 
-a.index-term-entry[href]::after {
+span.index-term-entry:after {
+    content: leader('.');
+}
+
+a.index-term-entry[href]::before {
     content: target-counter(attr(href), page) ;
+    text-decoration: none;
+}
+
+a.index-term-entry[href]::after {
+    content: "";
+    text-decoration: none;
 }
 
