@@ -1022,3 +1022,53 @@ def convertWordEndnotes(root):
             del anchor.attrib['name']
         except KeyError:
             pass
+
+
+@registerTransformation
+def addIndexListing(root):
+    """ Add an index listing for all terms inside <span class="index-term"> """
+
+    indexes = dict()
+    
+    for num, node in enumerate(CSSSelector('span.index-term')(root)):
+        term = node.text_content().strip()
+        term_id = 'index-term-%d' % num
+        node.attrib['id'] = term_id
+        if not term in indexes:
+            indexes[term] = list()
+        indexes[term].append(term_id)
+
+    div_indexes = lxml.html.Element('div')
+    div_indexes.attrib['id'] = 'indexes-list'
+    div_ul = lxml.html.Element('ul')
+    div_indexes.append(div_ul)
+
+    if not indexes:
+        return
+
+    index_terms = sorted(indexes.keys())
+    for index_term in index_terms:
+        term_ids = indexes[index_term]
+
+        li = lxml.html.Element('li')
+        li.attrib['class'] = 'index-term-entry' 
+        li.text = index_term
+
+        for term_id in term_ids:
+            a = lxml.html.Element('a')
+            a.attrib['href'] = '#' + term_id
+            a.attrib['class'] = 'index-term-entry' 
+            a.text = index_term
+            li.append(a)
+
+        div_ul.append(li)
+
+    # check for an existing div#image-list) 
+    nodes = CSSSelector('div#indexes-list')(root)
+    if nodes:
+        # replace it
+        nodes[0].replace(nodes[0], div_indexes)
+    else:
+        # add to end of document
+        body = root.xpath('//body')[0] 
+        body.append(div_indexes)
