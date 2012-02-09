@@ -1,0 +1,6 @@
+/* Index references */
+
+a.index-term-entry[href]::after {
+    content: target-counter(attr(href), page) ;
+}
+
