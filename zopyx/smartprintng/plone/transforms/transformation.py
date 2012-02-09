@@ -1025,11 +1025,10 @@ def convertWordEndnotes(root):
 
 
 @registerTransformation
-def addIndexListing(root):
+def addIndexList(root):
     """ Add an index listing for all terms inside <span class="index-term"> """
 
     indexes = dict()
-    
     for num, node in enumerate(CSSSelector('span.index-term')(root)):
         term = node.text_content().strip()
         term_id = 'index-term-%d' % num
@@ -1038,13 +1037,13 @@ def addIndexListing(root):
             indexes[term] = list()
         indexes[term].append(term_id)
 
+    if not indexes:
+        return
+
     div_indexes = lxml.html.Element('div')
     div_indexes.attrib['id'] = 'indexes-list'
     div_ul = lxml.html.Element('ul')
     div_indexes.append(div_ul)
-
-    if not indexes:
-        return
 
     index_terms = sorted(indexes.keys())
     for index_term in index_terms:
@@ -1068,7 +1067,7 @@ def addIndexListing(root):
 
         div_ul.append(li)
 
-    # check for an existing div#image-list) 
+    # check for an existing div#indexes-list) 
     nodes = CSSSelector('div#indexes-list')(root)
     if nodes:
         # replace it
