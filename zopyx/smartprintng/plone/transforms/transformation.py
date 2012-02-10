@@ -293,7 +293,7 @@ def makeImagesLocal(root, params):
             # in order to prevent image fetching later on
             if 'internal-resource' in (img.get('class') or '') or img.get('processed'):
                 continue
-
+            
             scale = ''
             src = img.get('src')
             LOG.info('Introspecting image: %s' % src)
@@ -474,6 +474,7 @@ def makeImagesLocal(root, params):
                     else:
                         div.append(img_caption)
 
+                div.tail = img.tail
                 img.getparent().replace(img, div)
 
     fp_ini.close()
