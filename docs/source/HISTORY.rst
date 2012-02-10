@@ -1,10 +1,13 @@
 Changelog
 =========
 
-2.1.18 (unreleased)
+2.1.18 (2012-02-10)
 -------------------
- - folder aggregator now support (experimental) document filter
-   based on UIDs (filter_uid parameter)
+- folder aggregator now support (experimental) document filter
+  based on UIDs (filter_uid parameter)
+- makeImageLocal() transformation removed parts of the document
+  while replacing the old image with an image container
+- added experimental addIndexList transformation
 
 2.1.17 (2011-12-28)
 -------------------
