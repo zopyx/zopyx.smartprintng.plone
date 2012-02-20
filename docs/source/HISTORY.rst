@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.19 (2012-02-20)
+-------------------
+- unicode fix in HTML splitter code
+
 2.1.18 (2012-02-10)
 -------------------
 - folder aggregator now support (experimental) document filter
