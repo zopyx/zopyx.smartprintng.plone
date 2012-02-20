@@ -33,7 +33,7 @@ def split_html(html_filename, split_at_level=0):
         for level in range(split_at_level+1):
             if '<h%d' % (level+1) in line.lower():
                 html = '\n'.join(current_doc)
-                root = lxml.html.fromstring(html)
+                root = lxml.html.fromstring(unicode(html, 'utf-8'))
                 title = u''
                 h1_nodes = root.xpath('//h1')
                 if h1_nodes:
@@ -64,7 +64,7 @@ def split_html(html_filename, split_at_level=0):
 
     # now deal with the remaining part of the document
     html = '\n'.join(current_doc)
-    root = lxml.html.fromstring(html)
+    root = lxml.html.fromstring(unicode(html, 'utf-8'))
     title = u''
     h1_nodes = root.xpath('//h1')
     if h1_nodes:
