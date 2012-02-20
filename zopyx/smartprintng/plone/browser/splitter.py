@@ -37,7 +37,7 @@ def split_html(html_filename, split_at_level=0):
                 title = u''
                 h1_nodes = root.xpath('//h1')
                 if h1_nodes:
-                    title = h1_nodes[0].text_content()
+                    title = h1_nodes[0].text_content().strip()
 
                 # count tables and images
                 number_tables = len(root.xpath('//table'))
@@ -68,7 +68,7 @@ def split_html(html_filename, split_at_level=0):
     title = u''
     h1_nodes = root.xpath('//h1')
     if h1_nodes:
-        title = h1_nodes[0].text_content()
+        title = h1_nodes[0].text_content().strip()
 
     # count tables and images
     # count tables and images
@@ -93,7 +93,6 @@ def split_html(html_filename, split_at_level=0):
     # now store files on the filesystem
     ini_filename = os.path.join(destdir, 'documents.ini')
     fp_ini = codecs.open(ini_filename, 'w', 'utf-8')
-
 
     for count, d in enumerate(docs[1:]):
         filename = os.path.join(destdir, 'split-0/%d-level-%d.html' % (count, d['level']))
