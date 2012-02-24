@@ -1,3 +1,12 @@
+/* Define the 'c1' counter on a global element in order 
+ * to avoid scoping issues with H1 elements located inside 
+ * the inner DIVs of each chapter
+ */
+
+body {
+    counter-reset: c1 c2 c3 c4 c5 c6 c7 c8;
+}
+
 h1.title {
     counter-increment: c1;
     counter-reset: c2;
