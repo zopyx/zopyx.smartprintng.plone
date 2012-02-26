@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.20 (2012-02-26)
+-------------------
+- fixed CSS counter bug (related to PrinceXML 7.1 vs. 8.0)
+
 2.1.19 (2012-02-20)
 -------------------
 - unicode fix in HTML splitter code
