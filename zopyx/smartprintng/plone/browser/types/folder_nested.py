@@ -24,7 +24,7 @@ def _c(s):
         s = unicode(s, 'utf-8', 'ignore')
     return s.encode('utf-8')
 
-def collector(folder, level=1, published_only=False, html=[]):
+def collector(folder, level=1, published_only=False, html=[], filter_uids=[]):
 
     utils = getToolByName(folder, 'plone_utils')
     wf_tool = getToolByName(folder, 'portal_workflow')
@@ -81,10 +81,10 @@ def collector(folder, level=1, published_only=False, html=[]):
 class NestedHTMLView(BrowserView):
     """ A HTML collector for a Plone folder containing Document instances """
 
-    def __call__(self, published_only=False):
+    def __call__(self, published_only=False, filter_uids=[]):
         """ Collector for folderish content """
         html = list()
-        collector(self.context, 1, published_only, html)
+        collector(self.context, 1, published_only, html, filter_uids=[])
         html = '\n'.join(html)
         T = Transformer(['adjustHeadingsFromAggregatedHTML'])
         return T(html)
