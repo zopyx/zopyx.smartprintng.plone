@@ -987,8 +987,16 @@ def convertWordEndnotes(root):
         node_id = node.get('id', '')
         if not node_id.startswith('sdendnote'):
             continue
-        endnote_txt = node.xpath('.//p')[0].text_content()
-        endnote_num = node.xpath('.//a')[0].text_content()
+
+        p_tag = node.xpath('.//p')[0]
+        anchors_in_p_tag = p_tag.xpath('.//a')
+        endnote_num = None
+        if anchors_in_p_tag:
+            anchor = anchors_in_p_tag[0]
+            endnote_num = anchor.text_content()
+            anchor.getparent().remove(anchor)
+        
+        endnote_txt = p_tag.text_content()
         endnotes.append(dict(text=endnote_txt, number=endnote_num, id=node_id))
         node.getparent().remove(node)
 
