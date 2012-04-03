@@ -45,3 +45,4 @@ setup(name='zopyx.smartprintng.plone',
       target = plone
       """,
       )
+
