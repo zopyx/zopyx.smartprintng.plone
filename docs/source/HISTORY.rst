@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.21 (unreleased)
+2.1.21 (2012-04-03)
 -------------------
 - fixed bug in endnote number handling in convertEndNotes()
 
