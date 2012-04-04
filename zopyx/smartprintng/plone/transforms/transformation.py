@@ -13,6 +13,7 @@ import tempfile
 import inspect
 import uuid
 import time
+import locale
 import lxml.html
 
 import PIL
@@ -1054,7 +1055,7 @@ def addIndexList(root):
     div_ul = lxml.html.Element('ul')
     div_indexes.append(div_ul)
 
-    index_terms = sorted(indexes.keys())
+    index_terms = sorted(indexes.keys(), cmp=locale.strcoll)
     for index_term in index_terms:
         term_ids = indexes[index_term]
 
