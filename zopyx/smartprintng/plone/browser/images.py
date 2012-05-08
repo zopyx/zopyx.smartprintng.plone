@@ -25,7 +25,7 @@ def resolveImage(context, src):
         mechanism. Much fun :-P
     """
 
-    if context is None
+    if context is None:
         context = getSite()
     ref_catalog = getToolByName(context, 'reference_catalog')
     parse_result = urlparse(unquote(src))
