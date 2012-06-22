@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.24 (2012-06-22)
+-------------------
+- added .mode-flat and mode-nested CSS classes depending
+  on the folder aggregation mode in order to fix a problem
+  with the makeImagesLocal transformation for nested folders
+
 2.1.23 (2012-05-08)
 -------------------
 - fix in image resolver
