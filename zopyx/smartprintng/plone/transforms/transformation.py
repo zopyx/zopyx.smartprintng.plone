@@ -284,8 +284,7 @@ def makeImagesLocal(root, params):
     ini_filename = os.path.join(destdir, 'images.ini')
     fp_ini = file(ini_filename, 'w')
     images_seen = dict()
-
-    for document_node in CSSSelector('div.level-0')(root):
+    for document_node in CSSSelector('div.mode-flat.level-0,div.mode-nested.level-1')(root):
         document_obj = ref_catalog.lookupObject(document_node.get('uid'))
 
         for img in document_node.xpath(xpath_query(['img'])):
