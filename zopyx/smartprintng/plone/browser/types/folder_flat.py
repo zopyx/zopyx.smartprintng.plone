@@ -66,7 +66,7 @@ class FlatHTMLView(BrowserView):
                 review_state = wf_tool.getInfoFor(obj, 'review_state')
                 if published_only and review_state not in ['published']:
                     continue
-                html.append('<div class="level-%d document-boundary portal-type-%s review-state-%s" path="%s" id="doc-id-%s" document_id="%s" review_state="%s" level="%d" uid="%s">\n' % 
+                html.append('<div class="mode-flat level-%d document-boundary portal-type-%s review-state-%s" path="%s" id="doc-id-%s" document_id="%s" review_state="%s" level="%d" uid="%s">\n' % 
                             (level, pt, review_state, obj.absolute_url(1), obj.getId(), obj.getId(), review_state, level, obj.UID()))
                 html.append('<div class="contentinfo">')
                 html.append('<div><a class="editlink" href="%s/edit">Edit</a></div>' % obj.absolute_url())

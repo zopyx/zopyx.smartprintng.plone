@@ -49,7 +49,7 @@ def collector(folder, level=1, published_only=False, html=[], filter_uids=[]):
                     is_folderish = True
 
             if is_folderish:
-                html.append('<div class="level-%d document-boundary portal-type-folder review-state-%s" path="%s" id="doc-id-%s" document_id="%s" review_state="%s" level="%d" uid="%s">\n' % 
+                html.append('<div class="mode-nested level-%d document-boundary portal-type-folder review-state-%s" path="%s" id="doc-id-%s" document_id="%s" review_state="%s" level="%d" uid="%s">\n' % 
                             (level, review_state, obj.absolute_url(1), obj.getId(), obj.getId(), review_state, level, obj.UID()))
                 if IATFolder.providedBy(obj):
                     folder_title = obj.Title()
