@@ -15,6 +15,7 @@ from Products.ATContentTypes.interfaces import IATImage
 from Products.Archetypes.Field import Image
 from plone.app.imaging.scale import ImageScale
 from zopyx.smartprintng.plone.logger import LOG
+from zope.app.component.hooks import getSite
 
 def resolveImage(context, src):
     """ Try to resolve an image based on its src which 
@@ -24,6 +25,8 @@ def resolveImage(context, src):
         mechanism. Much fun :-P
     """
 
+    if context is None:
+        context = getSite()
     ref_catalog = getToolByName(context, 'reference_catalog')
     parse_result = urlparse(unquote(src))
     path = str(parse_result.path)

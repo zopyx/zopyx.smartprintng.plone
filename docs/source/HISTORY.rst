@@ -1,7 +1,15 @@
 Changelog
 =========
 
-2.1.21 (unreleased)
+2.1.23 (2012-05-08)
+-------------------
+- fix in image resolver
+
+2.1.22 (2012-04-04)
+-------------------
+- locale aware sorting of index terms in addIndex()
+
+2.1.21 (2012-04-03)
 -------------------
 - fixed bug in endnote number handling in convertEndNotes()
 
