@@ -788,7 +788,7 @@ def replaceUnresolvedLinks(root):
         span2 = lxml.html.Element('span')
         span2.attrib['class'] = 'generated-footnote'
         span2.text = href
-        span1.append(1, span2)
+        span1.insert(1, span2)
         link.getparent().replace(link, span1)
 
 
