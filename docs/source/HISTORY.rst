@@ -1,6 +1,12 @@
 Changelog
 =========
 
+2.1.26 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 2.1.25 (2012-08-14)
 -------------------
 - added .mode-flat and mode-nested CSS classes depending
