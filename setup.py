@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.1.24'
+version = '2.1.25'
 
 setup(name='zopyx.smartprintng.plone',
       version=version,
