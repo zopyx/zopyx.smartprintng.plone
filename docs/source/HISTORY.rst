@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.24 (2012-06-22)
+2.1.24 (2012-08-14)
 -------------------
 - added .mode-flat and mode-nested CSS classes depending
   on the folder aggregation mode in order to fix a problem
