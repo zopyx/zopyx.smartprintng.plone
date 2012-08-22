@@ -9,3 +9,35 @@
 * {
     font-family: ArialUnicode;
 }
+
+/* News item demo */
+
+.type-newsitem.content-body {
+}
+
+.type-newsitem.content-body .description {
+    margin-bottom: 1em;
+}
+
+.type-newsitem.content-body h2 {
+    display: none;
+}
+
+.type-newsitem.content-body .image-container {
+    width: 300px;
+    float: left;
+    padding-right: 1em;
+    padding-bottom: 0em;
+}
+.type-newsitem.content-body p {
+    padding: 0;
+    margin: 0;
+}
+
+.type-newsitem.content-body .image-caption:before {
+    display: none;
+}
+.type-newsitem.content-body .image-container span {
+    display: none;
+}
+.type-newsitem.content-body p {
