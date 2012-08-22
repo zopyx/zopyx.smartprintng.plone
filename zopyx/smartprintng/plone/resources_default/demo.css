@@ -12,7 +12,16 @@
 
 /* News item demo */
 
+h1 {
+    font-family: Arial;
+    color: orange;
+    font-size: 1.2em;
+}
+
+
 .type-newsitem.content-body {
+    columns: 2;
+    font-family: Arial;
 }
 
 .type-newsitem.content-body .description {
@@ -24,7 +33,7 @@
 }
 
 .type-newsitem.content-body .image-container {
-    width: 300px;
+    width: 270px;
     float: left;
     padding-right: 1em;
     padding-bottom: 0em;
