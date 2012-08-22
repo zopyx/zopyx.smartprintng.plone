@@ -32,6 +32,7 @@ def resolveImage(context, src):
     path = str(parse_result.path)
     img_obj = None
 
+
     if path.startswith('resolveuid'):
         # can be resolveuid/<uid>/@@images/image/preview
         path_parts = path.split('/')
@@ -46,7 +47,7 @@ def resolveImage(context, src):
             try:
                 result = urlopen(req)
             except HTTPError:
-               	result = None 
+                result = None 
 
             if result and result.url != src: 
                 # a redirection happened
@@ -56,9 +57,6 @@ def resolveImage(context, src):
 
         for p in candidates:
             img_obj = context.restrictedTraverse(p, None)
-            print p
-            print img_obj
-
             if img_obj:
                 if img_obj.portal_type in ('Image',):
                     # check if current image is a scale (having a parent image)
@@ -67,6 +65,9 @@ def resolveImage(context, src):
                     break
                 elif isinstance(img_obj, ImageScale):
                     img_obj = img_obj.aq_parent
+                    break
+                elif isinstance(img_obj.aq_inner.aq_base, Image):
+                    img_obj = img_obj.aq_inner.aq_base
                     break
                 elif isinstance(img_obj.aq_parent, Image):
                     break

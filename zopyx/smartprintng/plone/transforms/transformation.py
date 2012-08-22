@@ -296,6 +296,7 @@ def makeImagesLocal(root, params):
             
             scale = ''
             src = img.get('src')
+
             LOG.info('Introspecting image: %s' % src)
 
             img_obj = resolveImage(document_obj, src)
@@ -374,12 +375,15 @@ def makeImagesLocal(root, params):
                 # now also export the preview scale as well 
                 # (needed for EPUB export/conversion)
                 preview_filename = os.path.join(os.path.dirname(dest_img_name), 'preview_' + os.path.basename(dest_img_name))
-                preview_img = img_obj.Schema().getField('image').getScale(img_obj, scale='preview')
-                if preview_img == '': # no scales created?
-                    img_obj.Schema().getField('image').createScales(img_obj)
+                try:
                     preview_img = img_obj.Schema().getField('image').getScale(img_obj, scale='preview')
+                    if preview_img == '': # no scales created?
+                        img_obj.Schema().getField('image').createScales(img_obj)
+                        preview_img = img_obj.Schema().getField('image').getScale(img_obj, scale='preview')
+                except AttributeError: # Schema (for News Item images)
+                    preview_img = None
 
-                if safe_hasattr(preview_img, 'data'):
+                if preview_img and safe_hasattr(preview_img, 'data'):
                     file(preview_filename, 'wb').write(str(preview_img.data))                                                    
                     LOG.info('  Exported preview scale to: %s' % preview_filename)
 
@@ -393,8 +397,12 @@ def makeImagesLocal(root, params):
                 print >>fp_ini, '[%s]' % os.path.basename(dest_img_name)
                 print >>fp_ini, 'filename = %s' % dest_img_name 
                 print >>fp_ini, 'id = %s' % img_id 
-                print >>fp_ini, 'title = %s' % img_obj.Title()
-                print >>fp_ini, 'description = %s' % img_obj.Description()
+                try:
+                    print >>fp_ini, 'title = %s' % img_obj.Title()
+                    print >>fp_ini, 'description = %s' % img_obj.Description()
+                except AttributeError:
+                    print >>fp_ini, 'title = s' 
+                    print >>fp_ini, 'description = s' 
                 print >>fp_ini, 'scale = %s' % scale
                 images_seen[src] = os.path.basename(dest_img_name)
                 img_filename = dest_img_name
@@ -424,7 +432,10 @@ def makeImagesLocal(root, params):
             new_img.attrib.update(img.attrib.items())
             div.insert(0, new_img)
 
-            displayInline_field = img_obj.getField('displayInline')
+            try:
+                displayInline_field = img_obj.getField('displayInline')
+            except AttributeError:
+                displayInline_field = False
             if displayInline_field and not displayInline_field.get(img_obj):
 
                 # image caption
