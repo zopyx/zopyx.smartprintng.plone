@@ -1,11 +1,11 @@
 Changelog
 =========
 
-2.1.26 (unreleased)
+2.1.26 (2012-08-24)
 -------------------
 
-- Nothing changed yet.
-
+- some fixes/workaround for exporting (embedded) images from
+  special types like News Item
 
 2.1.25 (2012-08-14)
 -------------------

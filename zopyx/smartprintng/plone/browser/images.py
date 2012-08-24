@@ -32,7 +32,6 @@ def resolveImage(context, src):
     path = str(parse_result.path)
     img_obj = None
 
-
     if path.startswith('resolveuid'):
         # can be resolveuid/<uid>/@@images/image/preview
         path_parts = path.split('/')
