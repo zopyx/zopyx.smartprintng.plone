@@ -15,7 +15,11 @@ from Products.ATContentTypes.interfaces import IATImage
 from Products.Archetypes.Field import Image
 from plone.app.imaging.scale import ImageScale
 from zopyx.smartprintng.plone.logger import LOG
-from zope.app.component.hooks import getSite
+try:
+    from zope.app.component.hooks import getSite
+except ImportError:
+    from zope.component.hooks import getSite
+
 
 def resolveImage(context, src):
     """ Try to resolve an image based on its src which 
