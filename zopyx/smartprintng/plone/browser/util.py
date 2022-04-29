@@ -21,9 +21,8 @@ def getLanguageForObject(obj):
 def _findTextInNode(bs_node_or_text):
     if isinstance(bs_node_or_text, basestring):
         return bs_node_or_text
-    else:
-        html = lxml.html.fromstring(unicode(bs_node_or_text))
-        return html.text_content()
+    html = lxml.html.fromstring(unicode(bs_node_or_text))
+    return html.text_content()
 
 def reduce_image_quality(workdir, quality):
     """ Search for all images inside workdir and perform an inplace

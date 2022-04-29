@@ -106,12 +106,15 @@ class ProducePublishView(BrowserView):
         tmpdir_prefix = os.path.join(tempfile.gettempdir(), 'produce-and-publish')
         if not os.path.exists(tmpdir_prefix):
             os.makedirs(tmpdir_prefix)
-        destdir = tempfile.mkdtemp(dir=tmpdir_prefix, prefix=self.context.getId() + '-')
+        destdir = tempfile.mkdtemp(
+            dir=tmpdir_prefix, prefix=f'{self.context.getId()}-'
+        )
+
 
         # debug/logging
         params = kw.copy()
         params.update(self.request.form)
-        LOG.info('new job (%s, %s) - outdir: %s' % (args, params, destdir))
+        LOG.info(f'new job ({args}, {params}) - outdir: {destdir}')
 
         # get hold of the language (hyphenation support)
         language = getLanguageForObject(self.context)
@@ -120,15 +123,12 @@ class ProducePublishView(BrowserView):
 
         # Check for CSS injection
         custom_css = None
-        custom_stylesheet = params.get('custom_stylesheet')
-        if custom_stylesheet:
+        if custom_stylesheet := params.get('custom_stylesheet'):
             custom_css = str(self.context.restrictedTraverse(custom_stylesheet, None))
             if custom_css is None:
-                raise ValueError('Could not access custom CSS at %s' % custom_stylesheet)
+                raise ValueError(f'Could not access custom CSS at {custom_stylesheet}')
 
-        # check for resource parameter
-        resource = params.get('resource')
-        if resource:
+        if resource := params.get('resource'):
             resources_directory = resources_registry.get(resource)
             if not resources_directory:
                 raise ValueError('No resource "%s" configured' % resource)
@@ -142,7 +142,7 @@ class ProducePublishView(BrowserView):
                 template_name += '.pt'
             template_filename = os.path.join(resources_directory, template_name)
             if not os.path.exists(template_filename):
-                raise IOError('No template found (%s)' % template_filename)
+                raise IOError(f'No template found ({template_filename})')
             template = ViewPageTemplateFile2(template_filename)
 
         else:
@@ -155,8 +155,10 @@ class ProducePublishView(BrowserView):
 
         html_view = self.context.restrictedTraverse('@@asHTML', None)
         if not html_view:
-            raise RuntimeError('Object at does not provide @@asHTML view (%s, %s)' % 
-                               (self.context.absolute_url(1), self.context.portal_type))
+            raise RuntimeError(
+                f'Object at does not provide @@asHTML view ({self.context.absolute_url(1)}, {self.context.portal_type})'
+            )
+
         html_fragment = html_view()
 
         # arbitrary application data
@@ -185,7 +187,7 @@ class ProducePublishView(BrowserView):
 
         # split HTML document into parts and store them on the filesystem
         # (making only sense for folderish content)
-        if IATFolder.providedBy(self.context) and not 'no-split' in params:
+        if IATFolder.providedBy(self.context) and 'no-split' not in params:
             splitter.split_html(dest_filename, destdir)
 
         # copy over global styles etc.
@@ -194,11 +196,11 @@ class ProducePublishView(BrowserView):
 
         # copy over language dependent hyphenation data
         if language:
-            hyphen_file = os.path.join(resources_dir, 'hyphenation', language + '.hyp')
+            hyphen_file = os.path.join(resources_dir, 'hyphenation', f'{language}.hyp')
             if os.path.exists(hyphen_file):
                 shutil.copy(hyphen_file, destdir)
 
-            hyphen_css_file = os.path.join(resources_dir, 'languages', language + '.css')
+            hyphen_css_file = os.path.join(resources_dir, 'languages', f'{language}.css')
             if os.path.exists(hyphen_css_file):
                 shutil.copy(hyphen_css_file, destdir)
 
@@ -206,7 +208,7 @@ class ProducePublishView(BrowserView):
         self.copyResources(getattr(self, 'local_resources', ''), destdir)
         if ZIP_OUTPUT or 'zip_output' in params:
             archivename = tempfile.mktemp(suffix='.zip')
-            fp = zipfile.ZipFile(archivename, "w", zipfile.ZIP_DEFLATED) 
+            fp = zipfile.ZipFile(archivename, "w", zipfile.ZIP_DEFLATED)
             for root, dirs, files in os.walk(destdir):
                 #NOTE: ignore empty directories
                 for fn in files:
@@ -214,11 +216,11 @@ class ProducePublishView(BrowserView):
                     zfn = absfn[len(destdir)+len(os.sep):] #XXX: relative path
                     fp.write(absfn, zfn)
             fp.close()
-            LOG.info('ZIP file written to %s' % archivename)
+            LOG.info(f'ZIP file written to {archivename}')
 
         if 'no_conversion' in params:
             return destdir
-        
+
         if LOCAL_CONVERSION:
             from zopyx.convert2 import Converter
             c = Converter(dest_filename)
@@ -226,14 +228,14 @@ class ProducePublishView(BrowserView):
             if result['status'] != 0:
                 raise RuntimeError('Error during PDF conversion (%r)' % result)
             pdf_file = result['output_filename']
-            LOG.info('Output file: %s' % pdf_file)
+            LOG.info(f'Output file: {pdf_file}')
             return pdf_file
         else:
             # Produce & Publish server integration
             from zopyx.smartprintng.client.zip_client import Proxy2
             proxy = Proxy2(URL)
             result = proxy.convertZIP2(destdir, self.request.get('converter', 'pdf-prince'))
-            LOG.info('Output file: %s' % result['output_filename'])
+            LOG.info(f"Output file: {result['output_filename']}")
             return result['output_filename']
 
 InitializeClass(ProducePublishView)
@@ -243,16 +245,16 @@ class PDFDownloadView(ProducePublishView):
 
     def __call__(self, *args, **kw):
 
-        if not 'resource' in kw:
+        if 'resource' not in kw:
             kw['resource'] = 'pp-default'
-        if not 'template' in kw:
+        if 'template' not in kw:
             kw['template'] = 'pdf_template_standalone'
         kw['no-split'] = True
 
         output_file = super(PDFDownloadView, self).__call__(*args, **kw)
         mimetype = os.path.splitext(os.path.basename(output_file))[1]
         R = self.request.response
-        R.setHeader('content-type', 'application/%s' % mimetype)
+        R.setHeader('content-type', f'application/{mimetype}')
         R.setHeader('content-disposition', 'attachment; filename="%s.%s"' % (self.context.getId(), mimetype))
         R.setHeader('pragma', 'no-cache')
         R.setHeader('cache-control', 'no-cache')
@@ -271,7 +273,7 @@ class GenericDownloadView(ProducePublishView):
         mimetype = os.path.splitext(os.path.basename(output_file))[1]
         # return output file over HTTP
         R = self.request.response
-        R.setHeader('content-type', 'application/%s' % mimetype)
+        R.setHeader('content-type', f'application/{mimetype}')
         R.setHeader('content-disposition', 'attachment; filename="%s.%s"' % (self.context.getId(), mimetype))
         R.setHeader('content-length', os.path.getsize(output_file))
         R.setHeader('pragma', 'no-cache')

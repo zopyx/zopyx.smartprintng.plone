@@ -20,8 +20,7 @@ class GlossaryHTMLView(BrowserView):
         language = getLanguageForObject(self.context)
         results = self.context.getCatalog()()
         results = [b.getObject() for b in results]
-        sort_method = sort_methods.get(language)
-        if sort_method:
+        if sort_method := sort_methods.get(language):
             results.sort(sort_method)
         else:
             results.sort(default_sort_method)

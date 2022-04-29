@@ -14,22 +14,19 @@ class HTMLView(BrowserView):
         html.append('<div class="type-topic">')
         for brain in self.context.queryCatalog():
             obj = brain.getObject()
-            view = obj.restrictedTraverse('@@asHTML', None)
-            if view:
+            if view := obj.restrictedTraverse('@@asHTML', None):
                 html.append('<div class="topic-item">')
                 html.append(view())
-                html.append('</div>')
             else:
                 html.append('<div class="topic-item">')
                 html.append('<span class="aggregation-error">new view for %s (%s) found</span>' %
                             (obj.absolute_url(1), obj.portal_type))
-                html.append('</div>')
-
+            html.append('</div>')
         html.append('</div>')
 
     def __call__(self, *args, **kw):
         """ Collector for topic content """
-        html = list()
+        html = []
         self.collect(html)
         return ''.join(html)
 

@@ -26,8 +26,8 @@ def split_html(html_filename, split_at_level=0):
     destdir = os.path.dirname(html_filename)
     soup = BeautifulSoup(file(html_filename).read())
     fp = StringIO(soup.__str__(prettyPrint=True))
-    docs = list()
-    current_doc = list()
+    docs = []
+    current_doc = []
     for line in fp:
         line = line.rstrip()
         for level in range(split_at_level+1):
@@ -35,8 +35,7 @@ def split_html(html_filename, split_at_level=0):
                 html = '\n'.join(current_doc)
                 root = lxml.html.fromstring(unicode(html, 'utf-8'))
                 title = u''
-                h1_nodes = root.xpath('//h1')
-                if h1_nodes:
+                if h1_nodes := root.xpath('//h1'):
                     title = h1_nodes[0].text_content().strip()
 
                 # count tables and images
@@ -44,10 +43,9 @@ def split_html(html_filename, split_at_level=0):
                 number_images = len(CSSSelector('div.image-caption')(root))
 
                 # find all linkable nodes with an ID attribute
-                node_ids = list()
+                node_ids = []
                 for node in root.xpath('.//*'):
-                    node_id = node.get('id')
-                    if node_id:
+                    if node_id := node.get('id'):
                         node_ids.append(node_id)
 
                 html = lxml.html.tostring(root, encoding=unicode)
@@ -59,15 +57,14 @@ def split_html(html_filename, split_at_level=0):
                                  number_tables=number_tables))
                 current_doc = []
                 break
-                
+
         current_doc.append(line)
 
     # now deal with the remaining part of the document
     html = '\n'.join(current_doc)
     root = lxml.html.fromstring(unicode(html, 'utf-8'))
     title = u''
-    h1_nodes = root.xpath('//h1')
-    if h1_nodes:
+    if h1_nodes := root.xpath('//h1'):
         title = h1_nodes[0].text_content().strip()
 
     # count tables and images
@@ -76,10 +73,9 @@ def split_html(html_filename, split_at_level=0):
     number_images = len(CSSSelector('div.image-caption')(root))
 
     # find all linkable nodes with an ID attribute
-    node_ids = list()
+    node_ids = []
     for node in root.xpath('.//*'):
-        node_id = node.get('id')
-        if node_id:
+        if node_id := node.get('id'):
             node_ids.append(node_id)
 
     html = lxml.html.tostring(root, encoding=unicode)
@@ -97,17 +93,17 @@ def split_html(html_filename, split_at_level=0):
     for count, d in enumerate(docs[1:]):
         filename = os.path.join(destdir, 'split-0/%d-level-%d.html' % (count, d['level']))
         if not os.path.exists(os.path.dirname(filename)):
-            os.makedirs(os.path.dirname(filename))                
+            os.makedirs(os.path.dirname(filename))
         file(filename, 'w').write(d['html'].encode('utf-8'))
 
         print >>fp_ini, '[%d]' % count
-        print >>fp_ini, 'filename = %s' % filename
-        print >>fp_ini, 'title = %s' % d['title']
+        (print >>fp_ini, f'filename = {filename}')
+        (print >>fp_ini, f"title = {d['title']}")
         print >>fp_ini, 'number_tables= %d' % d['number_tables']
         print >>fp_ini, 'number_images = %d' % d['number_images']
         print >>fp_ini, 'node_ids = '
         for node_id in d['node_ids']:
-            print >>fp_ini, '    ' + node_id
+            (print >>fp_ini, f'    {node_id}')
         print >>fp_ini 
 
     fp_ini.close()

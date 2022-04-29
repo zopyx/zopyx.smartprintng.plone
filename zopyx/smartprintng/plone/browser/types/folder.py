@@ -32,10 +32,9 @@ class HTMLView(BrowserView):
                 if (IATFolder.providedBy(obj) or IDexterityContainer.providedBy(obj)):
                     is_folderish = True
                     break
-            else:
-                if IATFolder.providedBy(obj):
-                    is_folderish = True
-                    break
+            elif IATFolder.providedBy(obj):
+                is_folderish = True
+                break
 
         if is_folderish:
             return NestedHTMLView(request=self.request, context=self.context)(published_only, filter_uids)

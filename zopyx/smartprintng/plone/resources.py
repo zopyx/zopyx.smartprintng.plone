@@ -7,11 +7,12 @@
 Resources registry for templates, styles etc.
 """
 
+
 import os
 from logger import  LOG
 
 # mapping name -> directory
-resources_registry = dict()
+resources_registry = {}
 
 def registerResource(name, directory):
     if not os.path.exists(directory):

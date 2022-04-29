@@ -38,14 +38,13 @@ class FlatHTMLView(BrowserView):
                 if IPPContent.providedBy(obj):
                     items.append(dict(obj=obj, level=level))
                 else:
-                    LOG.warn('IPPContent not provided by %s' % obj.absolute_url(1))
+                    LOG.warn(f'IPPContent not provided by {obj.absolute_url(1)}')
 
                 if HAVE_DEXTERITY:
                     if (IATFolder.providedBy(obj) or IDexterityContainer.providedBy(obj)) and not IArchiveFolder.providedBy(obj):
                         collect_objects(obj, level+1, items)
-                else:
-                    if IATFolder.providedBy(obj) and not IArchiveFolder.providedBy(obj):
-                        collect_objects(obj, level+1, items)
+                elif IATFolder.providedBy(obj) and not IArchiveFolder.providedBy(obj):
+                    collect_objects(obj, level+1, items)
 
         utils = getToolByName(self.context, 'plone_utils')
         wf_tool = getToolByName(self.context, 'portal_workflow')

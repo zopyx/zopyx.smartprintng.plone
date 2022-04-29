@@ -31,7 +31,7 @@ def collector(folder, level=1, published_only=False, html=[], filter_uids=[]):
 
     for brain in folder.getFolderContents({'sort_on' : 'getObjPositionInParent'}):
         obj = brain.getObject()
-        LOG.info('Introspecting %s' % obj.absolute_url(1))
+        LOG.info(f'Introspecting {obj.absolute_url(1)}')
         view = obj.restrictedTraverse('@@asHTML', None)
 
         if view is not None:
@@ -44,9 +44,8 @@ def collector(folder, level=1, published_only=False, html=[], filter_uids=[]):
             if HAVE_DEXTERITY:
                 if (IATFolder.providedBy(obj) or IDexterityContainer.providedBy(obj)) and not IArchiveFolder.providedBy(obj):
                     is_folderish = True
-            else:
-                if IATFolder.providedBy(obj) and not IArchiveFolder.providedBy(obj):
-                    is_folderish = True
+            elif IATFolder.providedBy(obj) and not IArchiveFolder.providedBy(obj):
+                is_folderish = True
 
             if is_folderish:
                 html.append('<div class="mode-nested level-%d document-boundary portal-type-folder review-state-%s" path="%s" id="doc-id-%s" document_id="%s" review_state="%s" level="%d" uid="%s">\n' % 
@@ -74,8 +73,8 @@ def collector(folder, level=1, published_only=False, html=[], filter_uids=[]):
                 html.append('</div>')
                 html.append(view())
                 html.append('</div>')
-        else :
-            LOG.warn('No @@asHTML view found for %s' % obj.absolute_url(1))
+        else:
+            LOG.warn(f'No @@asHTML view found for {obj.absolute_url(1)}')
 
 
 class NestedHTMLView(BrowserView):
@@ -83,7 +82,7 @@ class NestedHTMLView(BrowserView):
 
     def __call__(self, published_only=False, filter_uids=[]):
         """ Collector for folderish content """
-        html = list()
+        html = []
         collector(self.context, 1, published_only, html, filter_uids=[])
         html = '\n'.join(html)
         T = Transformer(['adjustHeadingsFromAggregatedHTML'])

@@ -5,6 +5,7 @@
 
 """ HTML transformation classes (based on lxml.html) """
 
+
 import os
 import re
 import urllib2
@@ -24,7 +25,7 @@ from zopyx.smartprintng.plone.browser.images import resolveImage
 from Products.CMFPlone.utils import safe_hasattr
 
 _marker = object()
-TRANSFORMATIONS = dict()
+TRANSFORMATIONS = {}
 
 url_match = re.compile(r'^(http|https|ftp)://')
 leading_numbers = re.compile('^(\d*)', re.UNICODE|re.MULTILINE)
@@ -44,10 +45,7 @@ def availableTransformations():
 
 def hasTransformations(transformations):
     available_transformations = availableTransformations()
-    for t in transformations:
-        if not t in available_transformations:
-            return False
-    return True
+    return all(t in available_transformations for t in transformations)
 
 class Transformer(object):
 
@@ -80,10 +78,7 @@ class Transformer(object):
 
             ts = time.time()
             argspec = inspect.getargspec(method)
-            if isinstance(argspec, tuple):
-                args = argspec[0] # Python 2.4
-            else:
-                args = argspec.args
+            args = argspec[0] if isinstance(argspec, tuple) else argspec.args
             if 'params' in args:
                 method(root, params)
             else:
@@ -200,7 +195,7 @@ def ignoreHeadingsForStructure(root):
 
     for div in root.xpath('//div'):
         cls = div.get('class', '')
-        if not 'ignore-headings-for-structure' in cls:
+        if 'ignore-headings-for-structure' not in cls:
             continue
 
         for heading in div.xpath(xpath_query(ALL_HEADINGS)):
@@ -221,15 +216,15 @@ def adjustAnchorsToLinkables(root):
     # first collect all possible target link-id
     link_ids = [node.get('id') for node in root.xpath('//*[@id]')]
 
-    # now search for links 
+    # now search for links
     for link in root.xpath('//a'):
         href = link.get('href')
         # check for the typical internal link pattern
         if href and href.startswith('resolveuid') and '#' in href:
             ref_id = href.rsplit('#')[-1]
             if ref_id in link_ids:
-                # replace target link if it exists                         
-                link.attrib['href'] = '#%s' % ref_id
+                # replace target link if it exists
+                link.attrib['href'] = f'#{ref_id}'
             else:
                 # otherwise convert the link into a span
                 text = link.text_content()
@@ -274,7 +269,7 @@ def cleanupForEPUB(root):
         if src.endswith('image_preview'):
             img.attrib['src'] = 'preview_' + src.split('/')[0]
         else:
-            img.attrib['src'] = 'preview_' + src
+            img.attrib['src'] = f'preview_{src}'
 
 @registerTransformation
 def makeImagesLocal(root, params):
@@ -508,9 +503,12 @@ def cleanupHtml(root):
             node.getparent().remove(node)
 
         # remove links using href with empty contents
-        if node.tag == 'a':
-            if node.get('href') and not node.text_content().strip():
-                node.getparent().remove(node)
+        if (
+            node.tag == 'a'
+            and node.get('href')
+            and not node.text_content().strip()
+        ):
+            node.getparent().remove(node)
 
 @registerTransformation
 def footnotesForHtml(root):
@@ -519,8 +517,7 @@ def footnotesForHtml(root):
     """
 
     for node in CSSSelector('span.footnoteText')(root):
-        footnote_text = node.text_content()
-        if footnote_text:
+        if footnote_text := node.text_content():
             node.attrib['title'] = footnote_text
             node.text = u'Remark'
 
@@ -533,9 +530,8 @@ def rescaleImagesToOriginalScale(root):
     """
 
     for img in root.xpath('//img'):
-        scale = img.get('originalscale')
-        if scale:
-            img.attrib['src'] = img.attrib['src'] + '/image_%s' % scale
+        if scale := img.get('originalscale'):
+            img.attrib['src'] = img.attrib['src'] + f'/image_{scale}'
 
 @registerTransformation
 def addAnchorsToHeadings(root):
@@ -552,7 +548,7 @@ def removeTableOfContents(root):
 def addTableOfContents(root):
     """ Add a table of contents to the #toc node """
 
-    toc = list()
+    toc = []
 
     # first find all related entries (.bookmark-title class)
     for count, e in enumerate(root.xpath(xpath_query(ALL_HEADINGS))):
@@ -573,19 +569,17 @@ def addTableOfContents(root):
 
     for d in toc:
         li = lxml.html.Element('li')
-        li.attrib['class'] = 'toc-%s' % d['level']
+        li.attrib['class'] = f"toc-{d['level']}"
         a = lxml.html.Element('a')
         a.attrib['href'] = '#' + d['id']
-        a.attrib['class'] = 'toc-%s' % d['level']
+        a.attrib['class'] = f"toc-{d['level']}"
         span = lxml.html.Element('span')
         span.text = d['text']
         a.insert(0, span)
         li.append(a)
         div_ul.append(li)
 
-    # check for an existing TOC (div#toc) 
-    nodes = CSSSelector('div#toc')(root)
-    if nodes:
+    if nodes := CSSSelector('div#toc')(root):
         # replace it with the generated TOC
         toc = nodes[0]
         toc.getparent().replace(toc, div_toc)
@@ -598,8 +592,8 @@ def addTableOfContents(root):
 def addTableList(root):
     """ Add a table list based on the <caption> tags """
 
-    tables = list()
-    
+    tables = []
+
     for count, caption in enumerate(root.xpath('//caption')):
         text = caption.text_content()
         id = 'table-%d' % count
@@ -610,7 +604,7 @@ def addTableList(root):
                            count=count,
                            id=id))
 
-    if tables:            
+    if tables:        
         div_tables = lxml.html.Element('div')
         div_tables.attrib['id'] = 'table-list'
         div_ul = lxml.html.Element('ul')
@@ -628,9 +622,7 @@ def addTableList(root):
             li.append(a)
             div_ul.append(li)
 
-        # check for an existing div#table-list) 
-        nodes = CSSSelector('div#table-list')(root)
-        if nodes:
+        if nodes := CSSSelector('div#table-list')(root):
             # replace it
             nodes[0].replace(nodes[0], div_tables)
         else:
@@ -641,14 +633,14 @@ def addTableList(root):
 def addImageList(root):
     """ Add an image list based on the <caption> tags """
 
-    images = list()
-    
+    images = []
+
     count = 0
     for caption in root.xpath('//span'):
         # <span> with image captions may contain several css classes. Unfortunately
         # BeautifulSoup is unable to find elements by-CSS-class if the related element
         # contains more than one CSS class
-        if not 'image-caption-with-description' in caption.get('class', ''):
+        if 'image-caption-with-description' not in caption.get('class', ''):
             continue
         text = caption.text_content()
         id = 'image-%d' % count
@@ -677,14 +669,12 @@ def addImageList(root):
             li.append(a)
             div_ul.append(li)
 
-        # check for an existing div#image-list) 
-        nodes = CSSSelector('div#image-list')(root)
-        if nodes:
+        if nodes := CSSSelector('div#image-list')(root):
             # replace it
             nodes[0].replace(nodes[0], div_images)
         else:
             # add to end of document
-            body = root.xpath('//body')[0] 
+            body = root.xpath('//body')[0]
             body.append(div_images)
 
 @registerTransformation
@@ -694,10 +684,9 @@ def leaveLinksToPrinceXML(root):
     """
 
     for link in root.xpath('//a'):
-        href = link.get('href')
-        if href:
+        if href := link.get('href'):
             class_ = link.get('class', '')
-            link.attrib['class'] = class_ + ' no-decoration'
+            link.attrib['class'] = f'{class_} no-decoration'
 
 @registerTransformation
 def removeLinks(root):
@@ -715,8 +704,7 @@ def convertFootnotes(root):
     # <span class="footnoteText">some footnote text</span>
 
     for node in CSSSelector('span.footnoteText')(root):
-        footnote_text = node.text_content()
-        if footnote_text:
+        if footnote_text := node.text_content():
             node.attrib['class'] = 'generated-footnote'
 
     # generate footnotes from <a href>...</a> fields
@@ -725,8 +713,7 @@ def convertFootnotes(root):
         if not href or not url_match.match(href) or 'editlink' in a.get('class', ''):
             continue
 
-        text = a.text_content().strip()
-        if text:
+        if text := a.text_content().strip():
             # don't convert URL links with an URL as pcdata into a footnote
             if url_match.match(text):
                 continue
@@ -808,8 +795,7 @@ def removeCrapFromHeadings(root):
     """ Ensure that HX tags containing only text """
 
     for node in root.xpath(xpath_query(ALL_HEADINGS)):
-        text = node.text_content()
-        if text:
+        if text := node.text_content():
             node.clear()
             node.text = text
         else:
@@ -823,7 +809,7 @@ def fixHierarchies(root):
     """
 
     for doc in root.xpath('//div'):
-        if not 'document-boundary' in doc.get('class', ''):
+        if 'document-boundary' not in doc.get('class', ''):
             continue
         level = int(doc.get('level', '0'))
         if level > 0:
@@ -879,7 +865,7 @@ def fixAmpersand(root):
     """ Convert solitary '&' to '&amp;' """
 
     for node in root.xpath('//*'):
-        if not '&' in (node.text or ''):
+        if '&' not in ((node.text or '')):
             continue
         text = node.text
         text = text.replace('&amp;', '&')
@@ -939,15 +925,15 @@ def adjustHeadingsFromAggregatedHTML(root):
 
     # search all documents first
     selector = CSSSelector('div.portal-type-authoringcontentpage')
-    for node in selector(root):    
+    for node in selector(root):
         # get their level
         level = int(node.get('level'))
 
         # create a sorted list of used headings
-        heading_levels_used = list()
+        heading_levels_used = []
         for heading in node.xpath(xpath_query(ALL_HEADINGS)):
             heading_level = int(heading.tag[1:])
-            if not heading_level in heading_levels_used:
+            if heading_level not in heading_levels_used:
                 heading_levels_used.append(heading_level)
         heading_levels_used.sort()
 
@@ -983,17 +969,16 @@ def mergeSingleSpanIntoParagraph(root):
 
     for node in root.xpath('//p'):
         spans = node.xpath('.//span')
-        if len(spans) == 1:
-            if not spans[0].getchildren():
-                text = spans[0].text
-                spans[0].getparent().remove(spans[0])
-                node.text = text
+        if len(spans) == 1 and not spans[0].getchildren():
+            text = spans[0].text
+            spans[0].getparent().remove(spans[0])
+            node.text = text
 
 @registerTransformation
 def convertWordEndnotes(root):
     """ Convert Word endnotes into a simple list """
 
-    endnotes = list()
+    endnotes = []
     for node in root.xpath('//div'):
         node_id = node.get('id', '')
         if not node_id.startswith('sdendnote'):
@@ -1006,7 +991,7 @@ def convertWordEndnotes(root):
             anchor = anchors_in_p_tag[0]
             endnote_num = anchor.text_content()
             anchor.getparent().remove(anchor)
-        
+
         endnote_txt = p_tag.text_content()
         endnotes.append(dict(text=endnote_txt, number=endnote_num, id=node_id))
         node.getparent().remove(node)
@@ -1048,13 +1033,13 @@ def convertWordEndnotes(root):
 def addIndexList(root):
     """ Add an index listing for all terms inside <span class="index-term"> """
 
-    indexes = dict()
+    indexes = {}
     for num, node in enumerate(CSSSelector('span.index-term')(root)):
         term = node.text_content().strip()
         term_id = 'index-term-%d' % num
         node.attrib['id'] = term_id
-        if not term in indexes:
-            indexes[term] = list()
+        if term not in indexes:
+            indexes[term] = []
         indexes[term].append(term_id)
 
     if not indexes:
@@ -1073,26 +1058,24 @@ def addIndexList(root):
         li.attrib['class'] = 'index-term-entry' 
 
         span = lxml.html.Element('span')
-        span.attrib['class'] = 'index-term-entry' 
+        span.attrib['class'] = 'index-term-entry'
         span.text = index_term
         li.append(span)
 
         num_term_ids = len(term_ids)
         for i, term_id in enumerate(term_ids):
             a = lxml.html.Element('a')
-            a.attrib['href'] = '#' + term_id
-            a.attrib['class'] = 'index-term-entry' 
-            a.text = (i+1 < num_term_ids) and ', ' or ''
+            a.attrib['href'] = f'#{term_id}'
+            a.attrib['class'] = 'index-term-entry'
+            a.text = ', ' if i+1 < num_term_ids else ''
             li.append(a)
 
         div_ul.append(li)
 
-    # check for an existing div#indexes-list) 
-    nodes = CSSSelector('div#indexes-list')(root)
-    if nodes:
+    if nodes := CSSSelector('div#indexes-list')(root):
         # replace it
         nodes[0].replace(nodes[0], div_indexes)
     else:
         # add to end of document
-        body = root.xpath('//body')[0] 
+        body = root.xpath('//body')[0]
         body.append(div_indexes)

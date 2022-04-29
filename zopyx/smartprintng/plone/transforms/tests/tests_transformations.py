@@ -52,7 +52,7 @@ class TestTransformations(unittest2.TestCase):
 
     def testEmptyTransformationsWithAccentedChars(self):
         T = self._makeOne()
-        html = u'<h1>xx-%s-xx</h1>' % UMLAUT
+        html = f'<h1>xx-{UMLAUT}-xx</h1>'
         self.assertEqual(html, T(html))
 
     def testXpath_query(self):
@@ -74,7 +74,7 @@ class TestTransformations(unittest2.TestCase):
         regex = re.compile('<h1 id="(.*)">')
         mo = regex.search(html)
         self.assertNotEqual(mo, None)
-        self.assertEqual(len(mo.group(1)), 36)
+        self.assertEqual(len(mo[1]), 36)
 
     def testAddUUIDsForDiv(self):
         T = self._makeOne('addUUIDs')
@@ -85,7 +85,7 @@ class TestTransformations(unittest2.TestCase):
 
     def testAddUUIDsWithUmlauts(self):
         T = self._makeOne('addUUIDs')
-        html = T(u'<div>%s</div>' % UMLAUT)
+        html = T(f'<div>{UMLAUT}</div>')
         regex = re.compile('<div id="(.*)">')
         mo = regex.match(html)
         self.assertEqual(mo, None)
